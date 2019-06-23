@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-.FightingDisplayArea{
+.Fighting-Display-Area{
   width: 1000px;
   height: 600px;
   background-color: aqua;
@@ -20,34 +20,34 @@
   background-color: bisque;
 }
 
-.FightingControlArea{
+.Fighting-Control-Area{
   display: flex;
   flex-direction: row;
   width: 1000px;
   height: 200px;
   background-color: aquamarine;
-}
+} 
 
-.AttackTable{
+.attack-table{
   width: 600px;
   height: 200px;
   display: flex;
   flex-direction: column;
 }
 
-.AttackTable>div{
+.attack-table>div{
   display: flex;
   flex-direction: row;
 }
 
-.AttackTag{
+.attack-tag{
   display: flex;
   flex-direction: row;
   width: 300px;
   height: 100px;
 }
 
-.AttackInfo{
+.attack-info{
   width: 400px;
   height: 200px;
 }

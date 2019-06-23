@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import InfoCard from '../components/InfoCard';
 
 class FightingDisplayArea extends Component {
-   state = {  }
-
-   render() { 
-      return ( 
-         <div className = 'FightingDisplayArea'>
-            <div className = 'Fighting-Display-Area-Left'>
-               <InfoCard Blood = {this.props.Blood.enemy}/>
-               <img src = {require('../img/player.png')}></img>
+    state = {  }
+    render() { 
+        return ( 
+            <div className = 'Fighting-Display-Area'>
+                <div className = 'Fighting-Display-Left'>
+                    <InfoCard roleInfo = {this.props.roleInfo.enemy} />
+                    <img src = {this.props.roleInfo.player.backImg}></img>
+                </div>
+                <div className = 'Fighting-Display-Right'>
+                    <img src = {this.props.roleInfo.enemy.frontImg}></img>
+                    <InfoCard roleInfo = {this.props.roleInfo.player} />
+                </div>
             </div>
-            <div className = 'Fighting-Display-Area-Right'>
-               <img src = {require('../img/enemy.png')}></img>
-               <InfoCard Blood = {this.props.Blood.my}/>
-            </div>
-         </div>
-      );
-   }
+         );
+    }
 }
  
 export default FightingDisplayArea;
