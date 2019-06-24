@@ -24,7 +24,7 @@ class FightingControlArea extends Component {
 
     render() { 
         return ( 
-            <div className = 'Fighting-Control-Area'>
+            <div className = 'Fighting-Control-Area' style = {{visibility: 'hidden'}}>
                 <div className = 'attack-table'>
                     <div>
                         <AttackTag attack = {this.props.attack[0]}/>

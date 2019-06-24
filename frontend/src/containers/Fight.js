@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import FightingControlArea from './FightingControlArea';
 import FightingDisplayArea from './FightingDisplayArea';
+import FightingFooter from './FightingFooter';
 
 class Fight extends Component {
     state = { arrowPosition: {x: 0, y: 0}, 
@@ -31,6 +31,10 @@ class Fight extends Component {
             },
         },
 
+        text: {
+            upper: '上上上',
+            lower: '下下下'
+        },
     }
 
     moveArrow = e => {
@@ -48,7 +52,7 @@ class Fight extends Component {
     playerExecuteAttack = index => {
         var roleInfo = this.state.roleInfo;
 
-        if(this.state.roleInfo.player.attack[index].currentPP > 0){
+        if(roleInfo.player.attack[index].currentPP > 0){
             roleInfo.player.attack[index].currentPP--;
 
             console.log(roleInfo.player.name+'使出'+roleInfo.player.attack[index].name);
@@ -106,9 +110,10 @@ class Fight extends Component {
         return ( 
             <div className = 'Fight-Main-Field'>
                 <FightingDisplayArea roleInfo = {this.state.roleInfo}/>
-                <FightingControlArea attack = {this.state.roleInfo.player.attack} moveArrow = {this.moveArrow}
+                <FightingFooter attack = {this.state.roleInfo.player.attack} moveArrow = {this.moveArrow} 
                     arrowPosition = {this.state.arrowPosition}
-                    playerExecuteAttack = {this.playerExecuteAttack}/>
+                    playerExecuteAttack = {this.playerExecuteAttack}
+                    text = {this.state.text} />
             </div>
          );
     }

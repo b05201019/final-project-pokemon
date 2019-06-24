@@ -12,7 +12,7 @@ export default ({roleInfo}) => {
     }
 
     var lifeBarCurrentStyle = {
-        width: 100*(roleInfo.currentBlood/roleInfo.totalBlood).toString()+'%',
+        width: 100*(roleInfo.currentBlood/roleInfo.totalBlood < 0?0:roleInfo.currentBlood/roleInfo.totalBlood).toString()+'%',
         height: '100%',
         background: 'green',
         transition: '0.3s',

@@ -20,9 +20,18 @@
   background-color: bisque;
 }
 
+.Fighting-Footer{
+  position: absolute;
+  top: 600px;
+  width: 1000px;
+  height: 200px;
+}
+
 .Fighting-Control-Area{
+  position: absolute;
   display: flex;
   flex-direction: row;
+  top: 0px;
   width: 1000px;
   height: 200px;
   background-color: aquamarine;
@@ -50,4 +59,27 @@
 .attack-info{
   width: 400px;
   height: 200px;
+}
+
+@keyframes typing {
+  from { width: 0 }
+}
+
+.Fighting-Text-Area{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 0px;
+  width: 1000px;
+  height: 200px;
+  background-color: aquamarine;
+}
+
+.text-input{
+  display: flex;
+  text-align: right;
+  font-size: 40px;
+  height: 100px;
+  overflow: hidden;
+  white-space: nowrap;
 }
