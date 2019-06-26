@@ -1,19 +1,23 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter } from 'react-router-dom';
-import { Switch, Route } from 'react-router-dom';
-import Home from './containers/Home';
-import Game from './containers/Game';
-import Fight from './containers/Fight';
+import React from "react";
+import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import Home from "./containers/Home";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Game from "./containers/Game";
+import Fight from "./containers/Fight";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className = "App">
+      <div className="App">
         <Switch>
-          <Route path = "/Home" component = {Home}></Route>
-          <Route path = "/Game" component = {Game}></Route>
-          <Route path = "/Fight" component = {Fight}></Route>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/users/login" component={Login} />
+          <Route exact path="/users/register" component={Register} />
+          <Route exact path="/Game" component={Game} />
+          <Route exact path="/Fight" component={Fight} />
         </Switch>
       </div>
     </BrowserRouter>
