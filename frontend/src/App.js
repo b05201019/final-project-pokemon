@@ -8,8 +8,6 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Game from "./containers/Game";
 import Fight from "./containers/Fight";
-
-
 function App() {
   return (
     <BrowserRouter>
