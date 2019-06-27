@@ -54,11 +54,7 @@ class Game extends Component {
         console.log(this.state.position);
         return ( 
             <div>
-<<<<<<< HEAD
-                
-=======
                 <Gameview position={this.state.position} characterPositionInMap={this.state.characterPositionInMap} openMenu={this.state.openMenu}/>
->>>>>>> 6de7f4b748cccfbfe191a91c36c4a316bb52255c
             </div>
          );
     }
