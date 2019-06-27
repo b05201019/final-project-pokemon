@@ -2,42 +2,61 @@
 async function move(e){
     // e.preventDefault();
     const position = this.state.position;
+    var enemyPosition = this.state.map.enemy.map(item=>{
+        return {top:this.state.character.characterPositionInMap.top-item.position.top, left:this.state.character.characterPositionInMap.left-item.position.left}
+    })
+    var noEntry = this.state.map.noEntry.concat(enemyPosition);
+    
+    var noEntryOtherSide = false;
+    
             switch(e.keyCode){
                 case 37:
-                    const noEntryLeft = this.state.noEntry.some((item)=>{
+                    const noEntryLeft = noEntry.some((item)=>{
                        return item.left === (parseInt(position.left)+50);
                     });
-                    if(noEntryLeft) break;
+                    noEntryOtherSide = noEntry.some((item)=>{
+                        return item.top === (parseInt(position.top))
+                    })
+                    if(noEntryLeft&&noEntryOtherSide) break;
                     this.setState({position:{
                         top: position.top,
                         left: (parseInt(position.left)+50).toString(),
                     }})
                     break;
                 case 38:
-                    const noEntryTop = this.state.noEntry.some((item)=>{
+                    const noEntryTop = noEntry.some((item)=>{
                         return item.top === (parseInt(position.top)+50);
                     });
-                    if(noEntryTop) break;
+                    noEntryOtherSide = noEntry.some((item)=>{
+                        return item.left === (parseInt(position.left));
+                    })
+                    if(noEntryTop&&noEntryOtherSide) break;
                     this.setState({position:{
                         top: (parseInt(position.top)+50).toString(),
                         left: position.left,
                     }})
                     break;
                 case 39:
-                    const noEntryRight = this.state.noEntry.some((item)=>{
+                    const noEntryRight = noEntry.some((item)=>{
                         return item.left === (parseInt(position.left)-50);
                     });
-                    if(noEntryRight) break;
+                    noEntryOtherSide = noEntry.some((item)=>{
+                        return item.top === (parseInt(position.top));
+                    })
+                    if(noEntryRight&&noEntryOtherSide) break;
                     this.setState({position:{
                         top: position.top,
                         left: (parseInt(position.left)-50).toString(),
                     }})
                     break;
                 case 40:
-                    const noEntryDown = this.state.noEntry.some((item)=>{
+                    const noEntryDown = noEntry.some((item)=>{
                         return item.top === (parseInt(position.top)-50);
                      });
-                     if(noEntryDown) break;
+                     noEntryOtherSide = noEntry.some((item)=>{
+                         return item.left === (parseInt(position.left));
+                     })
+                     if(noEntryDown&&noEntryOtherSide) break;
                     this.setState({position:{
                         top: (parseInt(position.top)-50).toString(),
                         left: position.left,

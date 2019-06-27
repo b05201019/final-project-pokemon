@@ -8,15 +8,14 @@ class character extends Component {
             width: "50px",
             height: "50px",
             position: "absolute",
-            top: "calc(50% + "+this.props.characterPositionInMap.top+"px)",
-            left: "calc(50% + "+this.props.characterPositionInMap.left+"px)",
-            transform: "translate(-100%, -100%)",
+            top: (this.props.characterPositionInMap.top).toString()+"px",
+            left: (this.props.characterPositionInMap.left).toString()+"px",
+            textAlign: "center",
+            transform: "rotate("+(90+this.props.facing).toString()+"deg)",
         }
-        // console.log(style.top);
-        // console.log(style.left);
-        // console.log(this.props.characterPositionInMap)
         return (
             <div style={style}>
+                <p>:D</p>
             </div>
         )
     }

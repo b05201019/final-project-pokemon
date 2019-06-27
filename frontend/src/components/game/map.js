@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Enemy from './enemy'
 
 
 class map extends Component {
@@ -12,13 +13,12 @@ class map extends Component {
             left: this.props.position.left+"px",
             top: this.props.position.top+"px",
             transitionProperty: "top left",
-            transitionDuration: "500ms",
+            transitionDuration: "300ms",
             transitionTimeingFunction: "linear"
-            
         }
         return (
             <div style={style}>
-                
+                <Enemy enemy={this.props.enemy[0]} characterPositionInMap={this.props.characterPositionInMap}/>
             </div>
         )
     }

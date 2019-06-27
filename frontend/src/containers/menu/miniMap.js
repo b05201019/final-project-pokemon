@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import MiniMapView from '../../components/miniMapView'
+import MiniMapView from '../../components/game/miniMapView'
 
 
 class miniMap extends Component {

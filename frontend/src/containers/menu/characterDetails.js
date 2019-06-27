@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CharacterDetailsView from '../../components/characterDetailsView'
+import CharacterDetailsView from '../../components/game/characterDetailsView'
 
 export default class characterDetails extends Component {
     render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PokemonDetailsView from '../../components/pokemonDetailsView';
+import PokemonDetailsView from '../../components/game/pokemonDetailsView';
 
 export default class pokemonDetail extends Component {
     render() {
