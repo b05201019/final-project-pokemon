@@ -54,14 +54,16 @@ class Fight extends Component {
     }
 
     playerExecuteAttack = async index => {
+        console.log(this.state.textArray);
+
         this.setState({ waitPressEnter: false});
         var roleInfo = this.state.roleInfo;
 
         if(roleInfo.player.attack[index].currentPP > 0){
             this.setState({ displayState: 'text'});
             roleInfo.player.attack[index].currentPP--;
-
-            this.textDisplay({ upper: roleInfo.player.name+'使出', lower: ''});
+            
+            this.textDisplay( { upper: roleInfo.player.name+'使出', lower: '' } );
             await this.sleep(this.state.text.upper.length*100);
             this.textDisplay( { upper: roleInfo.player.name+'使出', lower: roleInfo.player.attack[index].name } );
             await this.sleep(this.state.text.lower.length*100);
@@ -79,8 +81,6 @@ class Fight extends Component {
                 this.textDisplay({upper: '你贏了', lower: ''});
                 return true;
             } else{
-                console.log('輪到對面的回合');
-    
                 index = Math.floor(Math.random()*4);
                 var count = 0;
     
@@ -88,8 +88,6 @@ class Fight extends Component {
                     count++;
                 }
 
-                console.log(index);
-    
                 this.enemyExcuteAttack(index+count);
             }
         }
@@ -98,7 +96,6 @@ class Fight extends Component {
     textDisplay = obj => {
         this.setState({text: {upper: obj.upper,
                                 lower: obj.lower}})
-        console.log("textDisplay...");
     }
 
     enemyExcuteAttack = async index => {
@@ -107,7 +104,6 @@ class Fight extends Component {
 
         roleInfo.enemy.attack[index].currentPP--;
         
-        console.log(roleInfo.enemy.name+'使出'+roleInfo.enemy.attack[index].name);
         this.textDisplay({ upper: roleInfo.enemy.name+'使出', lower: '' });
         await this.sleep(this.state.text.upper.length*100);
         this.textDisplay({ upper: roleInfo.enemy.name+'使出', lower: roleInfo.enemy.attack[index].name });
@@ -117,14 +113,12 @@ class Fight extends Component {
         if(Math.random() < roleInfo.enemy.attack[index].probability){
             roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
 
-            console.log('成功命中!');
         } else{
             this.textDisplay({upper: '但是失敗了', lower: ''});
             await this.sleep(this.state.text.upper.length*100);
         }
 
         if(roleInfo.player.currentBlood <= 0){
-            console.log('你輸了');
             this.textDisplay({upper: '你輸了', lower: ''});       
             return true;     
         }
