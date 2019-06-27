@@ -2,12 +2,13 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Switch, Route } from 'react-router-dom';
-import './containers/Home';
-import './containers/Game';
+import Home from './containers/Home';
+import Game from './containers/Game';
 
 function App() {
   return (
     <BrowserRouter>
+    <Game />
       <div className = "App">
         <Switch>
           <Route path = "/Home" components = {Home}></Route>
