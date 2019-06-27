@@ -70,15 +70,17 @@ class Fight extends Component {
 
             if(Math.random() < roleInfo.player.attack[index].probability){
                 roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
+                this.textDisplay({upper: '成功擊中!', lower: ''});
+                await this.sleep(this.state.text.upper.length*100);
             } else{
-                this.textDisplay({upper: '但是失敗了', lower: ''});
+                this.textDisplay({upper: '但是失敗了...', lower: ''});
                 await this.sleep(this.state.text.upper.length*100);
             }
 
             this.setState({ roleInfo: roleInfo});
 
             if(roleInfo.enemy.currentBlood <= 0){
-                this.textDisplay({upper: '你贏了', lower: ''});
+                this.textDisplay({upper: '你贏了!', lower: ''});
                 return true;
             } else{
                 index = Math.floor(Math.random()*4);
@@ -112,14 +114,15 @@ class Fight extends Component {
 
         if(Math.random() < roleInfo.enemy.attack[index].probability){
             roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
-
+            this.textDisplay({upper: '成功擊中!', lower: ''});
+            await this.sleep(this.state.text.upper.length*100);
         } else{
-            this.textDisplay({upper: '但是失敗了', lower: ''});
+            this.textDisplay({upper: '但是失敗了...', lower: ''});
             await this.sleep(this.state.text.upper.length*100);
         }
 
         if(roleInfo.player.currentBlood <= 0){
-            this.textDisplay({upper: '你輸了', lower: ''});       
+            this.textDisplay({upper: '你輸了...', lower: ''});       
             return true;     
         }
 
