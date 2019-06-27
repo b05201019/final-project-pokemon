@@ -25,6 +25,7 @@
   top: 600px;
   width: 1000px;
   height: 200px;
+  background-color: aquamarine;
 }
 
 .Fighting-Control-Area{
@@ -62,9 +63,7 @@
 }
 
 @keyframes typing {
-  from { width: 0; color: blue}
-
-  100%{color: brown}
+  from { width: 0 }
 }
 
 .Fighting-Text-Area{
