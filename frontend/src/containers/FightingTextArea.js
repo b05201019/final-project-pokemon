@@ -1,30 +1,15 @@
 import React, { Component } from 'react';
 
 class FightingTextArea extends Component {
-    state = {  }
-
-    constructor(props){
-        super(props);
-
-        this.upperTextLength = (this.props.text.upper.length).toString();
-        this.upperStyle = {width: this.upperTextLength+'em',
-                            animation: 'typing '+this.upperTextLength*0.1+'s steps('+this.upperTextLength+')'
-        }
-
-        this.lowerTextLength = (this.props.text.lower.length).toString();
-        this.lowerStyle = {width: this.lowerTextLength+'em',
-                            animation: 'typing '+this.lowerTextLength*0.1+'s steps('+this.lowerTextLength+')'
-        }
-    }
-
+    state = {}
 
     render() { 
         return ( 
-            <div className = 'Fighting-Text-Area'>
-                <div className = 'text-input fighting-text-input-upper' style = {this.upperStyle}>
+            <div className = 'Fighting-Text-Area' style = {{visibility: this.props.displayState}}>
+                <div className = 'text-input fighting-text-input-upper'>
                     {this.props.text.upper}
                 </div>
-                <div className = 'text-input fighting-text-input-lower' style = {this.lowerStyle}>
+                <div className = 'text-input fighting-text-input-lower'>
                     {this.props.text.lower}
                 </div>
             </div>

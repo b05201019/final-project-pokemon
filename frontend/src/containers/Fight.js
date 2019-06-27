@@ -3,10 +3,10 @@ import FightingDisplayArea from './FightingDisplayArea';
 import FightingFooter from './FightingFooter';
 
 class Fight extends Component {
-    state = { arrowPosition: {x: 0, y: 0}, 
+    state = { arrowPosition: {x: 0, y: 0}, waitPressEnter: false, displayState: 'control',
     
         roleInfo: {
-            player: { name: 'Ian', level: 18, currentBlood: 200, totalBlood: 200, 
+            player: { name: 'Ian', level: 18, currentBlood: 200, totalBlood: 200,
                         frontImg: '', 
                         
                         backImg: require('../img/player.png'),
@@ -32,9 +32,13 @@ class Fight extends Component {
         },
 
         text: {
-            upper: '上上上',
-            lower: '下下下'
+            upper: '',
+            lower: ''
         },
+    }
+
+    sleep = function sleep(time){
+        return new Promise((res)=>setTimeout(res, time));
     }
 
     moveArrow = e => {
@@ -49,61 +53,85 @@ class Fight extends Component {
         this.setState({arrowPosition: arrowPosition, roleInfo: roleInfo});
     }
 
-    playerExecuteAttack = index => {
+    playerExecuteAttack = async index => {
+        this.setState({ waitPressEnter: false});
         var roleInfo = this.state.roleInfo;
 
         if(roleInfo.player.attack[index].currentPP > 0){
+            this.setState({ displayState: 'text'});
             roleInfo.player.attack[index].currentPP--;
 
-            console.log(roleInfo.player.name+'使出'+roleInfo.player.attack[index].name);
+            this.textDisplay({ upper: roleInfo.player.name+'使出', lower: ''});
+            await this.sleep(this.state.text.upper.length*100);
+            this.textDisplay( { upper: roleInfo.player.name+'使出', lower: roleInfo.player.attack[index].name } );
+            await this.sleep(this.state.text.lower.length*100);
 
             if(Math.random() < roleInfo.player.attack[index].probability){
-                console.log('成功命中!');
-
                 roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
             } else{
-                console.log('攻擊沒有命中...');
+                this.textDisplay({upper: '但是失敗了', lower: ''});
+                await this.sleep(this.state.text.upper.length*100);
             }
-            
-            this.setState({roleInfo: roleInfo});
-    
+
+            this.setState({ roleInfo: roleInfo});
+
             if(roleInfo.enemy.currentBlood <= 0){
-                console.log('你贏了');
+                this.textDisplay({upper: '你贏了', lower: ''});
+                return true;
             } else{
                 console.log('輪到對面的回合');
     
-                var index = Math.floor(Math.random()*4);
+                index = Math.floor(Math.random()*4);
                 var count = 0;
     
                 while(count < 4 && roleInfo.enemy.attack[index+count].currentPP == 0){
                     count++;
                 }
+
+                console.log(index);
     
                 this.enemyExcuteAttack(index+count);
             }
         }
     }
 
-    enemyExcuteAttack = index => {
+    textDisplay = obj => {
+        this.setState({text: {upper: obj.upper,
+                                lower: obj.lower}})
+        console.log("textDisplay...");
+    }
+
+    enemyExcuteAttack = async index => {
+        this.textDisplay({ upper: '', lower: ''});
         var roleInfo = this.state.roleInfo;
 
         roleInfo.enemy.attack[index].currentPP--;
         
         console.log(roleInfo.enemy.name+'使出'+roleInfo.enemy.attack[index].name);
+        this.textDisplay({ upper: roleInfo.enemy.name+'使出', lower: '' });
+        await this.sleep(this.state.text.upper.length*100);
+        this.textDisplay({ upper: roleInfo.enemy.name+'使出', lower: roleInfo.enemy.attack[index].name });
+        await this.sleep(this.state.text.lower.length*100);
+
 
         if(Math.random() < roleInfo.enemy.attack[index].probability){
             roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
 
             console.log('成功命中!');
         } else{
-            console.log('攻擊沒有命中');
+            this.textDisplay({upper: '但是失敗了', lower: ''});
+            await this.sleep(this.state.text.upper.length*100);
         }
 
         if(roleInfo.player.currentBlood <= 0){
             console.log('你輸了');
+            this.textDisplay({upper: '你輸了', lower: ''});       
+            return true;     
         }
 
-        this.setState({roleInfo: roleInfo});
+        this.setState({roleInfo: roleInfo, displayState: 'control'});
+
+        this.textDisplay({upper: '', lower: ''});
     }
 
     render() { 
@@ -113,7 +141,8 @@ class Fight extends Component {
                 <FightingFooter attack = {this.state.roleInfo.player.attack} moveArrow = {this.moveArrow} 
                     arrowPosition = {this.state.arrowPosition}
                     playerExecuteAttack = {this.playerExecuteAttack}
-                    text = {this.state.text} />
+                    text = {this.state.text}
+                    displayState = {this.state.displayState} />
             </div>
          );
     }

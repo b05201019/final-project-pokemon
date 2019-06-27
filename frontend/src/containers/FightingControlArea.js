@@ -8,23 +8,24 @@ class FightingControlArea extends Component {
         super();
 
         document.addEventListener('keydown', e => {
-            if(e.keyCode >= 37 && e.keyCode <= 40){
-                if(e.keyCode === 37 || e.keyCode === 39){
-                    this.props.moveArrow({x: 1, y: 0});
-                } else{
-                    this.props.moveArrow({x: 0, y: 1});
+            if(this.props.displayState === 'visible'){
+                if(e.keyCode >= 37 && e.keyCode <= 40){
+                    if(e.keyCode === 37 || e.keyCode === 39){
+                        this.props.moveArrow({x: 1, y: 0});
+                    } else{
+                        this.props.moveArrow({x: 0, y: 1});
+                    }
                 }
-            }
-
-            if(e.keyCode == 13 || e.keyCode == 32){
-                this.props.playerExecuteAttack(this.props.arrowPosition.x+2*this.props.arrowPosition.y);
-            }
-        })
+    
+                if(e.keyCode == 13 || e.keyCode == 32){
+                    this.props.playerExecuteAttack(this.props.arrowPosition.x+2*this.props.arrowPosition.y);
+                }
+            }})
     }
 
     render() { 
         return ( 
-            <div className = 'Fighting-Control-Area' style = {{visibility: 'hidden'}}>
+            <div className = 'Fighting-Control-Area' style = {{visibility: this.props.displayState}}>
                 <div className = 'attack-table'>
                     <div>
                         <AttackTag attack = {this.props.attack[0]}/>

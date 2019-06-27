@@ -4,13 +4,15 @@ import FightingTextArea from './FightingTextArea';
 
 class FightingFooter extends Component {
     state = {  }
+
     render() { 
         return ( 
             <div className = 'Fighting-Footer'>
                 <FightingControlArea attack = {this.props.attack} moveArrow = {this.props.moveArrow}
                     arrowPosition = {this.props.arrowPosition}
-                    playerExecuteAttack = {this.props.playerExecuteAttack}/>
-                <FightingTextArea text = {this.props.text}/>
+                    playerExecuteAttack = {this.props.playerExecuteAttack}
+                    displayState = {this.props.displayState == 'control'?'visible':'hidden'} />
+                <FightingTextArea text = {this.props.text} displayState = {this.props.displayState == 'text'?'visible':'hidden'}/>
             </div>
          );
     }

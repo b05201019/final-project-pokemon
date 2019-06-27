@@ -62,7 +62,9 @@
 }
 
 @keyframes typing {
-  from { width: 0 }
+  from { width: 0; color: blue}
+
+  100%{color: brown}
 }
 
 .Fighting-Text-Area{
@@ -82,4 +84,5 @@
   height: 100px;
   overflow: hidden;
   white-space: nowrap;
+  animation-iteration-count: infinite;
 }
