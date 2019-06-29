@@ -11,13 +11,12 @@ import Fight from "./containers/Fight";
 function App() {
   return (
     <BrowserRouter>
-      <div className = "App">
+      <div className="App">
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/users/login" component={Login} />
           <Route exact path="/users/register" component={Register} />
           <Route exact path="/Game" component={Game} />
-          <Route exact path="/Fight" component={Fight} />
         </Switch>
       </div>
     </BrowserRouter>

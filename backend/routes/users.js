@@ -55,7 +55,7 @@ router.post("/register", (req, res, next) => {
 // login;
 router.post("/login", (req, res) => {
   console.log(req.body);
-  console.log(req.session);
+  // console.log(req.session);
   const { email, password } = req.body;
   if (!email) {
     res.redirect("/users/login");
@@ -69,10 +69,12 @@ router.post("/login", (req, res) => {
         bcrypt.compare(password, userResponse.password, (err, cmpResponse) => {
           if (err) {
           } else if (cmpResponse) {
-            console.log("USER login:", userResponse._id, password);
+            //console.log("USER login:", userResponse._id, password);
             req.session.uid = userResponse._id;
             req.session.isLogin = true;
-            res.redirect("/Fight");
+            req.session.firsttime = 0;
+            //console.log("session", req.session, req.session.uid);
+            res.redirect("/Game");
           } else {
             res.redirect("/users/login");
           }
@@ -84,4 +86,8 @@ router.post("/login", (req, res) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.end();
+});
 module.exports = router;
