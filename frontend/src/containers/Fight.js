@@ -9,7 +9,7 @@ class Fight extends Component {
             player: { name: 'Ian', level: 18, currentBlood: 200, totalBlood: 200,
                         frontImg: '', 
                         
-                        backImg: require('../img/player.png'),
+                        backImg: require('../img/Player2.png'),
                         
                         attack: [{name: 'blablabla', damage: 120, speed: 5, probability: 0.1, totalPP: 5, currentPP: 5, arrow: 'visible'},
                             {name: 'DaDaDa', damage: 60, speed: 5, probability: 0.6, totalPP: 15, currentPP: 15, arrow: 'hidden'},
@@ -19,7 +19,7 @@ class Fight extends Component {
             },
         
             enemy: { name: 'Ric', level: 43, currentBlood: 200, totalBlood: 200,
-                        frontImg: require('../img/enemy.png'),
+                        frontImg: require('../img/RicBattle.png'),
                         
                         backImg: '',
                         

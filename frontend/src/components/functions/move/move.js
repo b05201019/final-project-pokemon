@@ -6,7 +6,6 @@ async function move(e){
         return {top:this.state.character.characterPositionInMap.top-item.position.top, left:this.state.character.characterPositionInMap.left-item.position.left}
     })
     var noEntry = this.state.map.noEntry.concat(enemyPosition);
-    
     var noEntryOtherSide = false;
     
             switch(e.keyCode){
@@ -15,7 +14,11 @@ async function move(e){
                        return item.left === (parseInt(position.left)+50);
                     });
                     noEntryOtherSide = noEntry.some((item)=>{
-                        return item.top === (parseInt(position.top))
+                        if(item.left === (parseInt(position.left)+50)){
+                            return item.top === (parseInt(position.top))
+                        }else{
+                            return false;
+                        }
                     })
                     if(noEntryLeft&&noEntryOtherSide) break;
                     this.setState({position:{
@@ -28,7 +31,11 @@ async function move(e){
                         return item.top === (parseInt(position.top)+50);
                     });
                     noEntryOtherSide = noEntry.some((item)=>{
-                        return item.left === (parseInt(position.left));
+                        if(item.top === (parseInt(position.top)+50)){
+                          return item.left === (parseInt(position.left));
+                        }else{
+                            return false;
+                        }
                     })
                     if(noEntryTop&&noEntryOtherSide) break;
                     this.setState({position:{
@@ -41,7 +48,11 @@ async function move(e){
                         return item.left === (parseInt(position.left)-50);
                     });
                     noEntryOtherSide = noEntry.some((item)=>{
-                        return item.top === (parseInt(position.top));
+                        if(item.left===(parseInt(position.left)-50)){
+                            return item.top === (parseInt(position.top));
+                        }else{
+                            return false;
+                        }
                     })
                     if(noEntryRight&&noEntryOtherSide) break;
                     this.setState({position:{
@@ -54,7 +65,11 @@ async function move(e){
                         return item.top === (parseInt(position.top)-50);
                      });
                      noEntryOtherSide = noEntry.some((item)=>{
-                         return item.left === (parseInt(position.left));
+                         if(item.top===(parseInt(position.top)-50)){
+                            return item.left === (parseInt(position.left));
+                         }else{
+                             return false;
+                         }
                      })
                      if(noEntryDown&&noEntryOtherSide) break;
                     this.setState({position:{
@@ -65,7 +80,7 @@ async function move(e){
                 default:
                     break;
                }
-        this.setState({moving: true});
+        this.setState({character: {...this.state.character, moving: true}});
 }
 
 
