@@ -3,7 +3,7 @@ import FightingDisplayArea from './FightingDisplayArea';
 import FightingFooter from './FightingFooter';
 
 class Fight extends Component {
-    state = { arrowPosition: {x: 0, y: 0}, waitPressEnter: false, displayState: 'control',
+    state = { arrowPosition: {x: 0, y: 0}, displayState: 'prepare',
     
         roleInfo: {
             player: { name: 'Ian', level: 18, currentBlood: 200, totalBlood: 200,
@@ -11,7 +11,7 @@ class Fight extends Component {
                         
                         backImg: require('../img/Player2.png'),
                         
-                        attack: [{name: 'blablabla', damage: 120, speed: 5, probability: 0.1, totalPP: 5, currentPP: 5, arrow: 'visible'},
+                        attack: [{name: '星報氣流展', damage: 120, speed: 5, probability: 0.1, totalPP: 5, currentPP: 5, arrow: 'visible'},
                             {name: 'DaDaDa', damage: 60, speed: 5, probability: 0.6, totalPP: 15, currentPP: 15, arrow: 'hidden'},
                             {name: 'WoooooW', damage: 20, speed: 5, probability: 1, totalPP: 20, currentPP: 20, arrow: 'hidden'},
                             {name: 'YoYoYo', damage: 100, speed: 5, probability: 0.4, totalPP: 10, currentPP: 10, arrow: 'hidden'}

@@ -38,7 +38,7 @@ class FightingControlArea extends Component {
                 </div>
                 <div className = 'attack-info'>
                     <div>
-                        <span>PP {this.props.attack[this.props.arrowPosition.x+2*this.props.arrowPosition.y].currentPP}</span>
+                        <span>PP {this.props.attack[this.props.arrowPosition.x+2*this.props.arrowPosition.y].currentPP}/{this.props.attack[this.props.arrowPosition.x+2*this.props.arrowPosition.y].totalPP}</span>
                     </div>
                     <div>
                         <span>Damage {this.props.attack[this.props.arrowPosition.x+2*this.props.arrowPosition.y].damage}</span>
