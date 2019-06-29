@@ -7,7 +7,7 @@ class FightingFooter extends Component {
     state = { prepareArrow: 0 }
 
     movePrepareArrow = e => {
-        this.setState({prepareArrow: (this.state.prepareArrow+e)%3});
+        this.setState({prepareArrow: (this.state.prepareArrow+e+3)%3});
     }
 
     render() { 
@@ -18,8 +18,13 @@ class FightingFooter extends Component {
                     <FightingControlArea attack = {this.props.attack} moveArrow = {this.props.moveArrow}
                         arrowPosition = {this.props.arrowPosition}
                         playerExecuteAttack = {this.props.playerExecuteAttack}
-                        displayState = {this.props.displayState == 'control'?'visible':'hidden'} />
-                    <FightingPrepareArea displayState = {this.props.displayState == 'prepare'?'visible':'hidden'} prepareArrow = {this.state.prepareArrow} movePrepareArrow = {this.movePrepareArrow}/>
+                        displayState = {this.props.displayState == 'control'?'visible':'hidden'}
+                        goToPrepare = {this.props.goToPrepare} />
+                    <FightingPrepareArea displayState = {this.props.displayState == 'prepare'?'visible':'hidden'} 
+                                            prepareArrow = {this.state.prepareArrow} 
+                                            movePrepareArrow = {this.movePrepareArrow}
+                                            goToFight = {this.props.goToFight}
+                                            skipClass = {this.props.skipClass} />
                 </div>
              );
         } else{
@@ -28,8 +33,13 @@ class FightingFooter extends Component {
                     <FightingControlArea attack = {this.props.attack} moveArrow = {this.props.moveArrow}
                         arrowPosition = {this.props.arrowPosition}
                         playerExecuteAttack = {this.props.playerExecuteAttack}
-                        displayState = {this.props.displayState == 'control'?'visible':'hidden'} />
-                    <FightingPrepareArea displayState = {this.props.displayState == 'prepare'?'visible':'hidden'} prepareArrow = {this.state.prepareArrow} movePrepareArrow = {this.movePrepareArrow}/>
+                        displayState = {this.props.displayState == 'control'?'visible':'hidden'}
+                        goToPrepare = {this.props.goToPrepare} />
+                        <FightingPrepareArea displayState = {this.props.displayState == 'prepare'?'visible':'hidden'} 
+                                            prepareArrow = {this.state.prepareArrow} 
+                                            movePrepareArrow = {this.movePrepareArrow}
+                                            goToFight = {this.props.goToFight}
+                                            skipClass = {this.props.skipClass} />
                     <FightingTextArea text = {this.props.text} displayState = {this.props.displayState == 'text'?'visible':'hidden'}/>
                 </div>
             )

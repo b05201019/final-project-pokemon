@@ -64,17 +64,18 @@ class Fight extends Component {
             roleInfo.player.attack[index].currentPP--;
             
             this.textDisplay( { upper: roleInfo.player.name+'使出', lower: '' } );
-            await this.sleep(this.state.text.upper.length*100);
+            await this.sleep(this.state.text.upper.length*500);
+            console.log(1);
             this.textDisplay( { upper: roleInfo.player.name+'使出', lower: roleInfo.player.attack[index].name } );
-            await this.sleep(this.state.text.lower.length*100);
-
+            await this.sleep(this.state.text.lower.length*500);
+            console.log(2);
             if(Math.random() < roleInfo.player.attack[index].probability){
                 roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
                 this.textDisplay({upper: '成功擊中!', lower: ''});
-                await this.sleep(this.state.text.upper.length*100);
+                await this.sleep(this.state.text.upper.length*500);
             } else{
                 this.textDisplay({upper: '但是失敗了...', lower: ''});
-                await this.sleep(this.state.text.upper.length*100);
+                await this.sleep(this.state.text.upper.length*500);
             }
 
             this.setState({ roleInfo: roleInfo});
@@ -107,18 +108,18 @@ class Fight extends Component {
         roleInfo.enemy.attack[index].currentPP--;
         
         this.textDisplay({ upper: roleInfo.enemy.name+'使出', lower: '' });
-        await this.sleep(this.state.text.upper.length*100);
+        await this.sleep(this.state.text.upper.length*500);
         this.textDisplay({ upper: roleInfo.enemy.name+'使出', lower: roleInfo.enemy.attack[index].name });
-        await this.sleep(this.state.text.lower.length*100);
+        await this.sleep(this.state.text.lower.length*500);
 
 
         if(Math.random() < roleInfo.enemy.attack[index].probability){
             roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
             this.textDisplay({upper: '成功擊中!', lower: ''});
-            await this.sleep(this.state.text.upper.length*100);
+            await this.sleep(this.state.text.upper.length*500);
         } else{
             this.textDisplay({upper: '但是失敗了...', lower: ''});
-            await this.sleep(this.state.text.upper.length*100);
+            await this.sleep(this.state.text.upper.length*500);
         }
 
         if(roleInfo.player.currentBlood <= 0){
@@ -131,6 +132,24 @@ class Fight extends Component {
         this.textDisplay({upper: '', lower: ''});
     }
 
+    goToFight = () => {
+        this.setState({displayState: 'control'});
+    }
+
+    goToPrepare = () => {
+        this.setState({displayState: 'prepare'});
+    }
+
+    skipClass = async () => {
+        this.setState({displayState: 'text'});
+        this.textDisplay({upper: '想進優拓，', lower: ''});
+        await this.sleep(this.state.text.upper.length*500);
+        this.textDisplay({upper: '想進優拓，', lower: '現在翹課可不行哦!'});
+        await this.sleep(this.state.text.lower.length*500);
+        this.textDisplay({upper: '', lower: ''});
+        this.setState({displayState: 'prepare'});
+    }
+
     render() { 
         return ( 
             <div className = 'Fight-Main-Field'>
@@ -139,7 +158,10 @@ class Fight extends Component {
                     arrowPosition = {this.state.arrowPosition}
                     playerExecuteAttack = {this.playerExecuteAttack}
                     text = {this.state.text}
-                    displayState = {this.state.displayState} />
+                    displayState = {this.state.displayState}
+                    goToFight = {this.goToFight}
+                    goToPrepare = {this.goToPrepare}
+                    skipClass = {this.skipClass} />
             </div>
          );
     }
