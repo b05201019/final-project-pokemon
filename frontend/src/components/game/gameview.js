@@ -6,7 +6,7 @@ import Menu from '../../containers/menu'
 
 class gameview extends Component {
     style = {
-        background: "green",
+        background: "black",
         width: "1000px",
         height: "800px",
         position: "absolute",
@@ -16,12 +16,21 @@ class gameview extends Component {
         overflow: "hidden",
     }
 
+
     facing(){
+        var img;
+        const moving = this.props.character.moving;
+        const ImgOneTwo = this.props.character.movingImgOneTwo;
         const nowFacing = this.props.character.characterFacing;
-        if(nowFacing.top) return 0;
-        if(nowFacing.right) return 90;
-        if(nowFacing.down) return 180;
-        if(nowFacing.left) return 270;
+        if(nowFacing.top)ImgOneTwo ? img=4 : img=5;
+        if(nowFacing.down) ImgOneTwo ? img=6 : img=7;
+        if(nowFacing.left) ImgOneTwo ? img=8 :img=2;
+        if(nowFacing.right) ImgOneTwo ? img=9 :img=3;
+        if(!moving&&nowFacing.top) img = 0;
+        if(!moving&&nowFacing.down) img = 1;
+        if(!moving&&nowFacing.left) img = 2;
+        if(!moving&&nowFacing.right) img = 3;
+        return img
     }
 
     render() {
@@ -29,7 +38,7 @@ class gameview extends Component {
         return (
             <div style={this.style}>
                 <Map map={this.props.map.name} enemy={this.props.map.enemy} position={this.props.position} characterPositionInMap={this.props.character.characterPositionInMap}/>
-                <Character facing={this.facing()} characterPositionInMap={this.props.character.characterPositionInMap}/>
+                <Character facing={this.facing()} playerImg={this.props.playerImg} characterPositionInMap={this.props.character.characterPositionInMap}/>
                 {this.props.openMenu ? <Menu />:null}
             </div>
         )

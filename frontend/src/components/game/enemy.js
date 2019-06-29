@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ric from '../../img/RicPixel.png'
 
 class enemy extends Component {
     render() {
@@ -6,7 +7,6 @@ class enemy extends Component {
             width: "50px",
             height: "50px",
             borderRadius: "50%",
-            background: "red",
             position: "absolute",
             top: (this.props.enemy.position.top).toString()+"px",
             left: (this.props.enemy.position.left).toString()+"px",
@@ -14,7 +14,7 @@ class enemy extends Component {
         }
         return (
             <div style = {style}>
-                <p>{this.props.enemy.name}</p>
+                <img src={ric} style={{width:"70px", height:"70px", position:"absolute", top:"50%", left:"50%", transform:"translate(-50%, -50%)"}}></img>
             </div>
         )
     }
