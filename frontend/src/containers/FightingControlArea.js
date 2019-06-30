@@ -20,6 +20,10 @@ class FightingControlArea extends Component {
                 if(e.keyCode == 13 || e.keyCode == 32){
                     this.props.playerExecuteAttack(this.props.arrowPosition.x+2*this.props.arrowPosition.y);
                 }
+
+                if(e.keyCode === 66){
+                    this.props.goToPrepare();
+                }
             }})
     }
 
