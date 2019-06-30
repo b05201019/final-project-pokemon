@@ -4,7 +4,7 @@ import CharacterDetailsView from '../../components/game/characterDetailsView'
 export default class characterDetails extends Component {
     render() {
         var isSelected = this.props.isSelected?{
-            background:"blue",
+            background:"black",
             color: "white",
         }:{};
         return (

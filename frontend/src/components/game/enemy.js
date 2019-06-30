@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-import ric from '../../img/RicPixel.png'
+import ric from '../../img/RicMini.png'
+import ricLeft from '../../img/RicMiniLeft.png'
+import ricRight from '../../img/RicMiniRight.png'
 
 class enemy extends Component {
+    ricImg = [ric, ricRight, ricLeft]
+
     render() {
+        console.log(this.props.enemy)
         var style = {
             width: "50px",
             height: "50px",
@@ -14,7 +19,7 @@ class enemy extends Component {
         }
         return (
             <div style = {style}>
-                <img src={ric} style={{width:"70px", height:"70px", position:"absolute", top:"50%", left:"50%", transform:"translate(-50%, -50%)"}}></img>
+                <img src={this.ricImg[this.props.enemy.facing]} style={{width:"70px", height:"70px", position:"absolute", top:"50%", left:"50%", transform:"translate(-50%, -50%)"}}></img>
             </div>
         )
     }

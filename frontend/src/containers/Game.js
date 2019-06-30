@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //component
 import Gameview from '../components/game/gameview';
+import TextArea from './Speaking';
 // function
 // import moveLeft from '../components/functions/move/moveLeft';
 // import moveRight from '../components/functions/move/moveRight';
@@ -71,10 +72,15 @@ class Game extends Component {
                     {top:300, left:350}, {top:300, left:300}, {top:300, left:250},
                 ],
                 enemy: [
-                    {name:"ric", position:{top:100, left:200}},
+                    {name:"ric", position:{top:100, left:200}, facing:1,
+                    text:{
+                        upper:"優拓現在缺人噢",
+                        lower:"但你github的星星數...先來對戰吧！",
+                    }},
                 ]
             },
             openMenu: false,
+            speaking: false,
         }
     }
     moving = (e)=>{
@@ -116,10 +122,22 @@ class Game extends Component {
         const enemyTop = this.state.character.characterPositionInMap.top-this.state.map.enemy[0].position.top;
         const enemyLeft = this.state.character.characterPositionInMap.left-this.state.map.enemy[0].position.left;
         if(e.keyCode===32){
-            if(top===enemyTop+50&&left===enemyLeft&&facing.down) console.log("you meet ric downward!");
-            if(top===enemyTop-100&&left===enemyLeft&&facing.top) console.log("you meet ric upward!");
-            if(top===enemyTop&&left===enemyLeft-50&&facing.left) console.log("you meet ric leftside!");
-            if(top===enemyTop&&left===enemyLeft+50&&facing.right) console.log("you meet ric rightside!");
+            // if(top===enemyTop+50&&left===enemyLeft&&facing.down){console.log("you meet ric downward!")};
+            if(top===enemyTop-100&&left===enemyLeft&&facing.top){
+                this.setState({map: {...this.state.map,
+                enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數...先來對戰吧！",}}]}});
+                this.setState({speaking: true});
+            };
+            if(top===enemyTop&&left===enemyLeft-50&&facing.left){
+                this.setState({map: {...this.state.map,
+                enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數...先來對戰吧！",}}]}});
+                this.setState({speaking: true});
+            };
+            if(top===enemyTop&&left===enemyLeft+50&&facing.right){
+                this.setState({map: {...this.state.map,
+                enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數...先來對戰吧！",}}]}});
+                this.setState({speaking: true});
+            };
         }
     }
 
@@ -130,8 +148,10 @@ class Game extends Component {
         document.addEventListener("keydown", this.letsBattle)
     }
     render() { 
+        console.log(this.state.map.enemy)
+        console.log([{...this.state.map.enemy}])
         // console.log(this.state.moving);
-        console.log(this.state.position);
+        // console.log(this.state.position);
         return (
             <div>
                 <Gameview 
@@ -141,6 +161,7 @@ class Game extends Component {
                     openMenu={this.state.openMenu}
                     map={this.state.map}
                 />
+                <TextArea text = {this.state.map.enemy[0].text} displayState = {this.state.speaking}/>
             </div>
          );
     }

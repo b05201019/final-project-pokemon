@@ -20,6 +20,7 @@ class FightingTextArea extends Component {
         console.log(this.props.text.upper);
 
         return ( 
+            this.props.displayState&&
             <div className = 'Fighting-Text-Area'>
                 <div className = 'text-input fighting-text-input-upper' style = {this.upperStyle}>
                     {this.props.text.upper}
