@@ -15,7 +15,6 @@ class character extends Component {
       textAlign: "center"
       // transform: "rotate("+(90+this.props.facing).toString()+"deg)",
     };
-    console.log(this.props.facing);
     return (
       <div style={style}>
         <img

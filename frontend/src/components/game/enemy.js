@@ -7,7 +7,6 @@ class enemy extends Component {
     ricImg = [ric, ricRight, ricLeft]
 
     render() {
-        console.log(this.props.enemy)
         var style = {
             width: "50px",
             height: "50px",

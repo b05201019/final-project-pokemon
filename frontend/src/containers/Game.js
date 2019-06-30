@@ -33,58 +33,60 @@ class Game extends Component {
       roleInfo: {
         player: {
           name: "Ian",          level: 18,
-          currentBlood: 200,    totalBlood: 200,
+          anger: 0,
+          currentBlood: 150,    totalBlood: 150,
           frontImg: "",         backImg: require("../img/Player2.png"),
           attack: [{
-              name: "星報氣流展", damage: 120,  speed: 5,
-              probability:0.1,  totalPP: 5,   currentPP: 5,
-              arrow: "visible"
+              name: "幫你github按點心", damage: 20, selfDamage: 0,  speed: 5,
+              probability:1,  totalPP: 25,   currentPP: 25,
+              arrow: "visible", text: 'Ian開心Ric就開心'
             },
             {
-              name: "DaDaDa",   damage: 60,     speed: 5,
-              probability: 0.6, totalPP: 15,    currentPP: 15,
-              arrow: "hidden"
+              name: "好拉這我之後看",   damage: 40, selfDamage: 0,     speed: 5,
+              probability: 1, totalPP: 10,    currentPP: 10,
+              arrow: "hidden", text: '我的意思是你一定要看啦(你讓Ric憤怒並提升20點傷害)'
             },
             {
-                name: "WoooooW",    damage: 20,     speed: 5,
-                probability: 1,     totalPP: 20,    currentPP: 20,
-                arrow: "hidden"
+                name: "醜到爆的css",    damage: 80, selfDamage: 0,     speed: 5,
+                probability: 0.4,     totalPP: 10,    currentPP: 10,
+                arrow: "hidden", text: '雖然css不算分，但你這個......恩'
             },
             {
-                name: "YoYoYo",     damage: 100,    speed: 5,
-                probability: 0.4,   totalPP: 10,    currentPP: 10,
-                arrow: "hidden"
+                name: "助教抱歉我名字打錯",     damage: 30, selfDamage: 0,    speed: 5,
+                probability: 0.8,   totalPP: 20,    currentPP: 20,
+                arrow: "hidden", text: '可以請助教再clone一次嗎'
             }]
           },
           enemy: {
             name: "Ric",
             level: 43,
-            currentBlood: 200,
-            totalBlood: 200,
+            anger: 0,
+            currentBlood: 300,
+            totalBlood: 300,
             frontImg: require("../img/RicBattle.png"),
   
             backImg: "",
   
             attack: [
               {
-                name: "blablabla",  damage: 120,    speed: 5,
-                probability: 0.1,   totalPP: 5,     currentPP: 5,
-                arrow: "visible"
+                name: "吃我的尚方寶劍啦",  damage: 80, selfDamage: 0,    speed: 5,
+                probability: 0.2,   totalPP: 5,     currentPP: 5,
+                arrow: "visible", text: '不好意思，不小心捅到'
               },
               {
-                name: "DaDaDa",     damage: 60,     speed: 5,
-                probability: 0.6,   totalPP: 15,    currentPP: 15,
-                arrow: "hidden"
+                name: "我不是歧視windows",  damage: 30, selfDamage: 0,     speed: 5,
+                probability: 1,   totalPP: 20,    currentPP: 20,
+                arrow: "hidden", text: '好拉我就是拉'
               },
               {
-                name: "WoooooW",    damage: 20,     speed: 5,
-                probability: 1,     totalPP: 20,    currentPP: 20,
-                arrow: "hidden"
+                name: "crazy week",    damage: 0, selfDamage: 20,     speed: 5,
+                probability: 1,     totalPP: 2,    currentPP: 2,
+                arrow: "hidden", text: '今天slide只有5頁喔'
               },
               {
-                name: "YoYoYo",     damage: 100,    speed: 5,
-                probability: 0.4,   totalPP: 10,    currentPP: 10,
-                arrow: "hidden"
+                name: "電機系的課多半小時很正常啊",     damage: 0, selfDamage: -50,    speed: 5,
+                probability: 1,   totalPP: 5,    currentPP: 5,
+                arrow: "hidden", text: '那我們現在開始講重點喔'
               }
             ]
           },
@@ -138,6 +140,7 @@ class Game extends Component {
       gameOrFight: true,
       openMenu: false,
       speaking: false,
+      youBeatRic: false,
       dontMove: false,
       imgFlicker: {my: 'visible', enemy: 'visible'},
     };
@@ -150,7 +153,7 @@ class Game extends Component {
   
   moving = e => {
     if(!this.state.gameOrFight) return 0;
-
+    if(this.state.speaking) return 0;
     e.preventDefault();
     if (
       e.keyCode === 37 ||
@@ -245,9 +248,10 @@ class Game extends Component {
       await this.sleep(this.state.text.lower.length * 100+200);
       
       if (Math.random() < roleInfo.enemy.attack[index].probability) {
-        roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
+        roleInfo.player.currentBlood -= (roleInfo.enemy.attack[index].damage+roleInfo.enemy.anger);
+        roleInfo.enemy.currentBlood -= roleInfo.enemy.attack[index].selfDamage;
         this.sparkle('my');
-      this.textDisplay({ upper: "成功擊中!", lower: "" });
+      this.textDisplay({ upper: roleInfo.enemy.attack[index].text, lower: "" });
       await this.sleep(this.state.text.upper.length * 100+200);
     } else {
       this.textDisplay({ upper: "但是失敗了...", lower: "" });
@@ -258,6 +262,70 @@ class Game extends Component {
       this.textDisplay({ upper: "你輸了...", lower: "" });
       await this.sleep(3000);
       this.setState({gameOrFight: true, speaking: false});
+      this.setState({      roleInfo: {
+        player: {
+          name: "Ian",          level: 18,
+          anger: 0,
+          currentBlood: 75,    totalBlood: 150,
+          frontImg: "",         backImg: require("../img/Player2.png"),
+          attack: [{
+              name: "幫你github按點心", damage: 20, selfDamage: 0,  speed: 5,
+              probability:1,  totalPP: 25,   currentPP: 25,
+              arrow: "visible", text: 'Ian開心Ric就開心'
+            },
+            {
+              name: "好拉這我之後看",   damage: 40, selfDamage: 0,     speed: 5,
+              probability: 1, totalPP: 10,    currentPP: 10,
+              arrow: "hidden", text: '我的意思是你一定要看啦(你讓Ric憤怒並提升20點傷害)'
+            },
+            {
+                name: "醜到爆的css",    damage: 80, selfDamage: 0,     speed: 5,
+                probability: 0.4,     totalPP: 10,    currentPP: 10,
+                arrow: "hidden", text: '雖然css不算分，但你這個......恩'
+            },
+            {
+                name: "助教抱歉我名字打錯",     damage: 30, selfDamage: 0,    speed: 5,
+                probability: 0.8,   totalPP: 20,    currentPP: 20,
+                arrow: "hidden", text: '可以請助教再clone一次嗎'
+            }]
+          },
+          enemy: {
+            name: "Ric",
+            level: 43,
+            anger: 0,
+            currentBlood: roleInfo.enemy.currentBlood,
+            totalBlood: 200,
+            frontImg: require("../img/RicBattle.png"),
+  
+            backImg: "",
+  
+            attack: [
+              {
+                name: "吃我的尚方寶劍啦",  damage: 80, selfDamage: 0,    speed: 5,
+                probability: 0.2,   totalPP: 5,     currentPP: 5,
+                arrow: "visible", text: '不好意思，不小心捅到'
+              },
+              {
+                name: "我不是歧視windows",  damage: 30, selfDamage: 0,     speed: 5,
+                probability: 1,   totalPP: 20,    currentPP: 20,
+                arrow: "hidden", text: '好拉我就是拉'
+              },
+              {
+                name: "crazy week",    damage: 0, selfDamage: 20,     speed: 5,
+                probability: 1,     totalPP: 2,    currentPP: 2,
+                arrow: "hidden", text: '今天slide只有5頁喔'
+              },
+              {
+                name: "電機系的課多半小時很正常啊",     damage: 0, selfDamage: -50,    speed: 5,
+                probability: 1,   totalPP: 5,    currentPP: 5,
+                arrow: "hidden", text: '那我們現在開始講重點喔'
+              }
+            ]
+          },
+        }})
+        this.setState({dontMove: true, displayState: "control"});
+        this.textDisplay({ upper: "", lower: "" });
+        return 0;
     }
 
     this.setState({ roleInfo: roleInfo, displayState: "control", dontMove: false });
@@ -283,6 +351,7 @@ class Game extends Component {
 
   letsBattle = (e)=>{
     if(!this.state.gameOrFight) return 0;
+    if(this.state.speaking) return 0;
     e.preventDefault();
     const facing = this.state.character.characterFacing;
     const top = parseInt(this.state.position.top);
@@ -292,37 +361,66 @@ class Game extends Component {
     if(e.keyCode===32){
         // if(top===enemyTop+50&&left===enemyLeft&&facing.down){console.log("you meet ric downward!")};
         if(top===enemyTop-100&&left===enemyLeft&&facing.top){
-            this.setState({map: {...this.state.map,
-                enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"優拓現在缺人噢",lower:"",}}]}});
-            this.setState({speaking: true});
-            setTimeout(()=>this.setState({map: {...this.state.map,
-                enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
-            setTimeout(()=>this.setState({gameOrFight: false}), 5000);
+            if(!this.state.youBeatRic){
+                this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"優拓現在缺人噢",lower:"",}}]}});
+                this.setState({speaking: true});
+                setTimeout(()=>this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
+                setTimeout(()=>this.setState({gameOrFight: false, dontMove: false}), 5000);
+            }else{
+                this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"哇，你真厲害",lower:"",}}]}});
+                this.setState({speaking: true});
+                setTimeout(()=>this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"哇，你真厲害",lower:"來幫我寫個graphql的tutorial吧",}}]}}), 1000)
+                setTimeout(()=>this.setState({speaking: false}), 3000);
+            }
         };
         if(top===enemyTop&&left===enemyLeft-50&&facing.left){
-            this.setState({map: {...this.state.map,
-                enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"優拓現在缺人噢",lower:"",}}]}});
-            this.setState({speaking: true});
-            setTimeout(()=>this.setState({map: {...this.state.map,
-                enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
-            setTimeout(()=>this.setState({gameOrFight: false}), 5000);
+            if(!this.state.youBeatRic){
+                this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"優拓現在缺人噢",lower:"",}}]}});
+                this.setState({speaking: true});
+                setTimeout(()=>this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
+                setTimeout(()=>this.setState({gameOrFight: false, dontMove: false}), 5000);
+            }else{
+                this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"哇，你真厲害",lower:"",}}]}});
+                this.setState({speaking: true});
+                setTimeout(()=>this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"哇，你真厲害",lower:"來幫我寫個graphql的tutorial吧",}}]}}), 1000)
+                setTimeout(()=>this.setState({speaking: false}), 3000);
+            }
         };
         if(top===enemyTop&&left===enemyLeft+50&&facing.right){
+            if(!this.state.youBeatRic){
             this.setState({map: {...this.state.map,
-                enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"優拓現在缺人噢",lower:"",}}]}});
-            this.setState({speaking: true});
-            setTimeout(()=>this.setState({map: {...this.state.map,
-                enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
-            setTimeout(()=>this.setState({gameOrFight: false}), 5000);
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"優拓現在缺人噢",lower:"",}}]}});
+                this.setState({speaking: true});
+                setTimeout(()=>this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
+                setTimeout(()=>this.setState({gameOrFight: false, dontMove: false}), 5000);
+            }else{
+                this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"哇，你真厲害",lower:"",}}]}});
+                this.setState({speaking: true});
+                setTimeout(()=>this.setState({map: {...this.state.map,
+                    enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"哇，你真厲害",lower:"來幫我寫個graphql的tutorial吧",}}]}}), 1000)
+                setTimeout(()=>this.setState({speaking: false}), 3000);
+            }
         };}
     }
-        skipClass2 = async () => {
-            this.textDisplay({ upper: "優拓現在缺人噢", lower: "" });
-            await this.sleep(this.state.text.upper.length * 300);
-            this.textDisplay({ upper: "優拓現在缺人噢", lower: "但你github的星星數......我們先來對戰吧！" });
-            await this.sleep(this.state.text.lower.length * 300);
-            this.textDisplay({ upper: "", lower: "" });
-        }
+
+    skipClass2 = async () => {
+        this.textDisplay({ upper: "優拓現在缺人噢", lower: "" });
+        await this.sleep(this.state.text.upper.length * 300);
+        this.textDisplay({ upper: "優拓現在缺人噢", lower: "但你github的星星數......我們先來對戰吧！" });
+        await this.sleep(this.state.text.lower.length * 300);
+        this.textDisplay({ upper: "", lower: "" });
+    }
+
   playerExecuteAttack = async index => {
     if(this.state.dontMove) return 0;
     
@@ -341,9 +439,15 @@ class Game extends Component {
       });
       await this.sleep(this.state.text.lower.length * 100+200);
       if (Math.random() < roleInfo.player.attack[index].probability) {
+          if(index === 1){
+              roleInfo.enemy.anger += 20;
+          } else if(index === 0 && roleInfo.enemy.anger > 0){
+            roleInfo.enemy.anger -= 10;
+          }
         roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
+        roleInfo.player.currentBlood -= roleInfo.player.attack[index].selfDamage;
         this.sparkle('enemy');
-        this.textDisplay({ upper: "成功擊中!", lower: "" });
+        this.textDisplay({ upper: roleInfo.player.attack[index].text, lower: "" });
         await this.sleep(this.state.text.upper.length * 100+200);
       } else {
         this.textDisplay({ upper: "但是失敗了...", lower: "" });
@@ -355,21 +459,21 @@ class Game extends Component {
       if (roleInfo.enemy.currentBlood <= 0) {
         this.textDisplay({ upper: "你贏了!", lower: "" });
         await this.sleep(3000);
-        this.setState({gameOrFight: true, speaking: false});
+        this.setState({gameOrFight: true, speaking: false, youBeatRic: true});
       } else {
         index = Math.floor(Math.random() * 4);
         var count = 0;
         
         while (
           count < 4 &&
-          roleInfo.enemy.attack[index + count].currentPP == 0
+          roleInfo.enemy.attack[(index + count)%4].currentPP == 0
           ) {
           count++;
         }
         
         this.enemyExcuteAttack(index + count);
       }
-    }
+    } else this.setState({ dontMove: false });
   };
   
   textDisplay = obj => {
@@ -412,7 +516,7 @@ class Game extends Component {
         await this.sleep(100);
         this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
         await this.sleep(100);
-        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}}); 
     }
   }
   
@@ -433,7 +537,7 @@ class Game extends Component {
     // console.log(this.state.moving);
     return (
       <div>
-        {this.state.speaking&&<div style={style}></div>}
+        {this.state.speaking&&!this.state.youBeatRic&&<div style={style}></div>}
         {this.state.gameOrFight ? (
         <div>
           <Gameview

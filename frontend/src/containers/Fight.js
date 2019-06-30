@@ -47,7 +47,7 @@ var style = {
   background: "black",
   zIndex: "1",
   animationName: "dimToBlackEnd",
-  animationDuration: "1.5s",
+  animationDuration: "1s",
   animationTimingFunction: "linear",
   mixBlendMode: "darken",
 }
