@@ -42,6 +42,17 @@ const characterItemSchema = new mongoose.Schema({
   }
 });
 
+const textSchema = new mongoose.Schema({
+  upper: {
+    type: String,
+    require: true
+  },
+  lower: {
+    type: String,
+    require: true
+  }
+});
+
 const enemySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -50,6 +61,10 @@ const enemySchema = new mongoose.Schema({
   position: {
     type: positionSchema,
     reuqire: true
+  },
+  text: {
+    type: textSchema,
+    require: true
   }
 });
 
@@ -85,6 +100,86 @@ const mapSchema = new mongoose.Schema({
   }
 });
 
+const attackSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    require: true
+  },
+  damage: {
+    type: Number,
+    require: true
+  },
+  speed: {
+    type: Number,
+    require: true
+  },
+  probability: {
+    type: Number,
+    require: true
+  },
+  totalPP: {
+    type: Number,
+    require: true
+  },
+  currentPP: {
+    type: Number,
+    require: true
+  },
+  arrow: {
+    type: String,
+    require: true
+  }
+});
+
+const playerSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    require: true
+  },
+  level: {
+    type: Number,
+    require: true
+  },
+  currentBlood: {
+    type: Number,
+    require: true
+  },
+  totalBlood: {
+    type: Number,
+    require: true
+  },
+  frontImg: {
+    type: String,
+    require: true
+  },
+  attack: {
+    type: [attackSchema],
+    require: true
+  }
+});
+
+const roleInfoSchema = new mongoose.Schema({
+  player: {
+    type: playerSchema,
+    require: true
+  },
+  enemy: {
+    type: playerSchema,
+    require: true
+  }
+});
+
+const arrowPositionSchema = new mongoose.Schema({
+  x: {
+    type: String,
+    require: true
+  },
+  y: {
+    type: String,
+    require: true
+  }
+});
+
 const DataSchema = new mongoose.Schema({
   character: {
     type: characterSchema,
@@ -95,7 +190,7 @@ const DataSchema = new mongoose.Schema({
     require: true
   },
   map: {
-    type: mapSchema,
+    type: [mapSchema],
     require: true
   },
   openMenu: {
@@ -103,7 +198,27 @@ const DataSchema = new mongoose.Schema({
     require: true
   },
   moving: { type: Boolean },
-  user: { type: String, require: true }
+  roleInfo: {
+    type: roleInfoSchema,
+    require: true
+  },
+  arrowPosition: {
+    type: arrowPositionSchema,
+    require: true
+  },
+  text: {
+    type: textSchema,
+    require: true
+  },
+  gameOrFight: {
+    type: Boolean,
+    require: true
+  },
+  user: { type: String, require: true },
+  youBeatRic: {
+    type: Boolean,
+    require: true
+  }
 });
 
 const Data = mongoose.model("Data", DataSchema);

@@ -51,6 +51,8 @@ class gameview extends Component {
             character={this.props.character}
             bagUse={this.props.bagUse}
             Data={this.props.Data}
+            useItem={this.props.useItem}
+            roleInfo={this.props.roleInfo}
           />
         ) : null}
       </div>

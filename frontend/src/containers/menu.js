@@ -5,7 +5,7 @@ import Bag from "./menu/Bag";
 import Save from "./menu/save";
 import Logout from "./menu/logout";
 import BagView from "../components/BagView";
-
+import AttackView from "../components/AttackView";
 class menu extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +13,15 @@ class menu extends Component {
       select: 0,
       openDetail: false,
       openBag: false,
-      bagSelect: 0
+      bagSelect: 0,
+      openAttack: false,
+      attackSelect: 0
     };
   }
   select = e => {
     const preSelect = this.state.select;
     const preBagSelect = this.state.bagSelect;
+    const preAttackSelect = this.state.attackSelect;
     e.preventDefault();
     if (!this.state.openBag) {
       switch (e.keyCode) {
@@ -31,13 +34,26 @@ class menu extends Component {
         default:
           return false;
       }
-    } else {
+    } else if (this.state.openBag && !this.state.openAttack) {
       switch (e.keyCode) {
         case 38:
           preBagSelect === 0 || this.setState({ bagSelect: preBagSelect - 1 });
           break;
         case 40:
           preBagSelect === 2 || this.setState({ bagSelect: preBagSelect + 1 });
+          break;
+        default:
+          return false;
+      }
+    } else if (this.state.openBag && this.state.openAttack) {
+      switch (e.keyCode) {
+        case 38:
+          preAttackSelect === 0 ||
+            this.setState({ attackSelect: preAttackSelect - 1 });
+          break;
+        case 40:
+          preAttackSelect === 4 ||
+            this.setState({ attackSelect: preAttackSelect + 1 });
           break;
         default:
           return false;
@@ -60,6 +76,44 @@ class menu extends Component {
       ) {
         this.setState({ openBag: false });
       }
+      if (
+        e.keyCode === 13 &&
+        this.state.openBag &&
+        this.state.bagSelect === 0
+      ) {
+        let amount = this.props.character.characterBag[0].amount;
+        this.props.useItem("傷藥", amount);
+      }
+      if (
+        e.keyCode === 13 &&
+        this.state.openBag &&
+        this.state.bagSelect === 1 &&
+        this.state.attackSelect === 4
+      ) {
+        console.log("ENter");
+        this.setState({ openAttack: false });
+        this.setState({ attackSelect: 0 });
+        console.log(this.state.openAttack);
+        // let amount = this.props.character.characterBag[1].amount;
+        // this.props.useItem("pp提升藥劑", amount);
+      } else if (
+        e.keyCode === 13 &&
+        this.state.openBag &&
+        this.state.bagSelect === 1 &&
+        this.state.openAttack
+      ) {
+        const amount = this.props.character.characterBag[1].amount;
+        this.props.useItem("pp提升藥劑", amount, this.state.attackSelect);
+        console.log(
+          this.props.roleInfo.player.attack[this.state.attackSelect].currentPP
+        );
+      } else if (
+        e.keyCode === 13 &&
+        this.state.openBag &&
+        this.state.bagSelect === 1
+      ) {
+        this.setState({ openAttack: true });
+      }
     }
   };
   componentDidMount() {
@@ -78,11 +132,17 @@ class menu extends Component {
   render() {
     return (
       <div style={menuStyle}>
-        {this.state.openBag ? (
+        {this.state.openBag && this.state.openAttack ? (
+          <AttackView
+            roleInfo={this.props.roleInfo}
+            attackSelect={this.state.attackSelect}
+          />
+        ) : this.state.openBag && !this.state.openAttack ? (
           <BagView
             bagUse={this.props.bagUse}
             character={this.props.character}
             bagSelect={this.state.bagSelect}
+            useItem={this.props.useItem}
           />
         ) : (
           <Fragment>

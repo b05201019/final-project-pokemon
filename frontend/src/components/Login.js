@@ -11,44 +11,44 @@ export default class Login extends Component {
 
   render() {
     return (
-    <div className="form">
-      <div className="box">
-        <h2>Login</h2>
-        <form
-          action="/users/login"
-          method="POST"
-          id="login-form"
-          onSubmit={this.handleSubmit}
-        >
-          <div className="inputBox">
+      <div className="form">
+        <div className="box">
+          <h2>Login</h2>
+          <form
+            action="/users/login"
+            method="POST"
+            id="login-form"
+            onSubmit={this.handleSubmit}
+          >
+            <div className="inputBox">
               <input
                 type="text"
                 name="email"
-                require={true}
+                require="true"
                 onChange={e => this.setState({ email: e.target.value })}
                 value={this.state.email}
               />
-            <label for="email">email</label>
-          </div>
-          <br />
-          <div className="inputBox">
+              <label htmlFor="email">email</label>
+            </div>
+            <br />
+            <div className="inputBox">
               <input
                 type="password"
                 name="password"
-                require={true}
+                require="true"
                 onChange={e => this.setState({ password: e.target.value })}
                 value={this.state.password}
               />
-              <label for="Password">Password</label>
-          </div>
+              <label htmlFor="Password">Password</label>
+            </div>
+            <br />
+          </form>
+          {this.props.msg ? <span>* {this.props.msg}</span> : ""}
+          <input type="submit" value="Submit" form="login-form" />
           <br />
-        </form>
-        {this.props.msg ? <span>* {this.props.msg}</span> : ""}
-        <input type="submit" value="Submit" form="login-form" />
-        <br />
-        <Link to="/">HomePage</Link>
+          <Link to="/">HomePage</Link>
+        </div>
       </div>
-    </div>
     );
   }
 }

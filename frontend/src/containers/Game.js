@@ -20,8 +20,16 @@ class Game extends Component {
         characterPositionInMap: {   top: 450,  left: 500   },
         characterFacing: {top: true, down: false, left: false, right: false},
         characterBag: [
-          {name: "傷藥", amount: 0, explain: "可回覆25滴血"},
-          {name: "pp提升藥劑", amount: 0,  explain: "回覆1pp"}
+          {
+            name: "傷藥",
+            amount: 5,
+            explain: "可回覆25滴血"
+          },
+          {
+            name: "pp提升藥劑",
+            amount: 5,
+            explain: "回覆1pp"
+          }
         ],
         movingImgOneTwo: false,
         moving: false,
@@ -237,7 +245,7 @@ class Game extends Component {
       this.textDisplay({ upper: "", lower: "" });
       var roleInfo = this.state.roleInfo;
       
-      roleInfo.enemy.attack[index].currentPP--;
+      roleInfo.enemy.attack[index%4].currentPP--;
       
       this.textDisplay({ upper: roleInfo.enemy.name + "使出", lower: "" });
       await this.sleep(this.state.text.upper.length * 100);
@@ -337,6 +345,7 @@ class Game extends Component {
     var roleInfo = this.state.roleInfo;
     var arrowPosition = this.state.arrowPosition;
 
+    console.log(roleInfo.player);
     roleInfo.player.attack[arrowPosition.x + 2 * arrowPosition.y].arrow =
       "hidden";
     arrowPosition = {
@@ -413,13 +422,13 @@ class Game extends Component {
         };}
     }
 
-    skipClass2 = async () => {
-        this.textDisplay({ upper: "優拓現在缺人噢", lower: "" });
-        await this.sleep(this.state.text.upper.length * 300);
-        this.textDisplay({ upper: "優拓現在缺人噢", lower: "但你github的星星數......我們先來對戰吧！" });
-        await this.sleep(this.state.text.lower.length * 300);
-        this.textDisplay({ upper: "", lower: "" });
-    }
+    // skipClass2 = async () => {
+    //     this.textDisplay({ upper: "優拓現在缺人噢", lower: "" });
+    //     await this.sleep(this.state.text.upper.length * 300);
+    //     this.textDisplay({ upper: "優拓現在缺人噢", lower: "但你github的星星數......我們先來對戰吧！" });
+    //     await this.sleep(this.state.text.lower.length * 300);
+    //     this.textDisplay({ upper: "", lower: "" });
+    // }
 
   playerExecuteAttack = async index => {
     if(this.state.dontMove) return 0;
@@ -520,6 +529,42 @@ class Game extends Component {
     }
   }
   
+  useItem = (item, amount, attacknum) => {
+    const roleInfo = this.state.roleInfo
+    const prevBlood = roleInfo.player.currentBlood;
+    roleInfo.player.currentBlood += 25
+    //console.log(prevBlood)
+    console.log(roleInfo.player.currentBlood)
+    if (item === "傷藥" && amount > 0 && prevBlood < 150) {
+      if(roleInfo.player.currentBlood > 150){
+        roleInfo.player.currentBlood = 150
+      }
+      this.setState({
+        roleInfo: roleInfo
+      });
+    }
+    console.log(this.state.roleInfo.player.currentBlood);
+
+    if (item === "pp提升藥劑" && amount > 0) {
+      const attackArray = this.state.roleInfo.player.attack[attacknum];
+      const prePPAmount = this.state.roleInfo.player.attack[attacknum]
+        .currentPP;
+      delete attackArray.currentPP;
+      const newAttackArray = { ...attackArray, currentPP: prePPAmount + 1 };
+      console.log(newAttackArray);
+      const ArrayA = this.state.roleInfo.player.attack;
+      console.log(ArrayA);
+      ArrayA.splice(0, 1, newAttackArray);
+      console.log(ArrayA);
+      this.setState({
+        roleInfo: {
+          player: {
+            attack: ArrayA
+          }
+        }
+      });
+    }
+  };
 
   componentDidMount() {
     this.fetchData();
@@ -534,6 +579,7 @@ class Game extends Component {
   }
 
   render() {
+    console.log(this.state.map.enemy[0])
     // console.log(this.state.moving);
     return (
       <div>
@@ -548,6 +594,8 @@ class Game extends Component {
             map={this.state.map}
             Data={this.state}
             bagUse={this.bagUse}
+            useItem={this.useItem}
+            roleInfo={this.state.roleInfo}
             />
           <TextArea text = {this.state.map.enemy[0].text} displayState = {this.state.speaking}/>
         </div>

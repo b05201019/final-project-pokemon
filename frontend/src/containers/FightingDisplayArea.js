@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import InfoCard from "../components/InfoCard";
+import PlayPic from "../img/Player2.png";
+import EnemyPic from "../img/RicBattle.png";
 
 class FightingDisplayArea extends Component {
   state = {};
@@ -9,7 +11,7 @@ class FightingDisplayArea extends Component {
         <div className="Fighting-Display-Left">
           <InfoCard roleInfo={this.props.roleInfo.enemy} />
           <img
-            src={this.props.roleInfo.player.backImg}
+            src={PlayPic}
             style={{
               height: "450px",
               width: "600px",
@@ -21,7 +23,7 @@ class FightingDisplayArea extends Component {
         </div>
         <div className="Fighting-Display-Right">
           <img
-            src={this.props.roleInfo.enemy.frontImg}
+            src={EnemyPic}
             style={{
               width: "400px",
               height: "450px",
