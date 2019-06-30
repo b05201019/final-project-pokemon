@@ -326,6 +326,7 @@ class Game extends Component {
         upper: "",
         lower: ""
       },
+      dontMove: false,
       imgFlicker: {my: 'visible', enemy: 'visible'}, 
       gameOrFight: false,
       openMenu: false
@@ -500,7 +501,7 @@ class Game extends Component {
       return true;
     }
 
-    this.setState({ roleInfo: roleInfo, displayState: "control" });
+    this.setState({ roleInfo: roleInfo, displayState: "control", dontMove: false });
 
     this.textDisplay({ upper: "", lower: "" });
   };
@@ -522,9 +523,9 @@ class Game extends Component {
   };
 
   playerExecuteAttack = async index => {
-    console.log(this.state.textArray);
-
-    this.setState({ waitPressEnter: false });
+    if(this.state.dontMove) return 0;
+    
+    this.setState({ dontMove: true });
     var roleInfo = this.state.roleInfo;
 
     if (roleInfo.player.attack[index].currentPP > 0) {
@@ -574,13 +575,14 @@ class Game extends Component {
   };
   
   skipClass = async () => {
-    this.setState({ displayState: "text" });
+    if(this.state.dontMove) return 0;
+    this.setState({ displayState: "text", dontMove: true });
     this.textDisplay({ upper: "想進優拓，", lower: "" });
     await this.sleep(this.state.text.upper.length * 100);
     this.textDisplay({ upper: "想進優拓，", lower: "現在翹課可不行哦!" });
     await this.sleep(this.state.text.lower.length * 100+200);
     this.textDisplay({ upper: "", lower: "" });
-    this.setState({ displayState: "prepare" });
+    this.setState({ displayState: "prepare", dontMove: false });
   };
 
   sparkle = async e => {
