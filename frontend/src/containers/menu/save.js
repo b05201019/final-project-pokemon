@@ -23,7 +23,7 @@ export default class save extends Component {
   render() {
     var isSelected = this.props.isSelected
       ? {
-          background: "blue",
+          background: "black",
           color: "white"
         }
       : {};

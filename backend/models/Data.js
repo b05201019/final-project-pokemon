@@ -65,6 +65,10 @@ const enemySchema = new mongoose.Schema({
   text: {
     type: textSchema,
     require: true
+  },
+  facing: {
+    type: Number,
+    require: true
   }
 });
 
@@ -128,6 +132,18 @@ const attackSchema = new mongoose.Schema({
   arrow: {
     type: String,
     require: true
+  },
+  selfDamage: {
+    type: Number,
+    require: true
+  },
+  speed: {
+    type: Number,
+    require: true
+  },
+  text: {
+    type: String,
+    require: true
   }
 });
 
@@ -155,6 +171,10 @@ const playerSchema = new mongoose.Schema({
   attack: {
     type: [attackSchema],
     require: true
+  },
+  anger: {
+    type: Number,
+    require: true
   }
 });
 
@@ -180,6 +200,17 @@ const arrowPositionSchema = new mongoose.Schema({
   }
 });
 
+const imgFlickerSchema = mongoose.Schema({
+  my: {
+    type: String,
+    require: true
+  },
+  enemy: {
+    type: String,
+    require: true
+  }
+});
+
 const DataSchema = new mongoose.Schema({
   character: {
     type: characterSchema,
@@ -189,10 +220,10 @@ const DataSchema = new mongoose.Schema({
     type: positionSchema,
     require: true
   },
-  map: {
-    type: [mapSchema],
-    require: true
-  },
+  // map: {
+  //   type: [mapSchema],
+  //   require: true
+  // },
   openMenu: {
     type: Boolean,
     require: true
@@ -217,6 +248,18 @@ const DataSchema = new mongoose.Schema({
   user: { type: String, require: true },
   youBeatRic: {
     type: Boolean,
+    require: true
+  },
+  speaking: {
+    type: Boolean,
+    require: true
+  },
+  dontMove: {
+    type: Boolean,
+    require: true
+  },
+  imgFlicker: {
+    type: imgFlickerSchema,
     require: true
   }
 });

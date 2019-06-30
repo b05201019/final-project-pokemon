@@ -19,10 +19,18 @@ router.post("/save", (req, res, next) => {
         const saveData = new Data({
           character: req.body.data.character,
           position: req.body.data.position,
-          map: req.body.data.map,
+          //map: req.body.data.map,
           openMenu: req.body.data.openMenu,
           moving: req.body.data.moving,
-          user: req.session.uid
+          user: req.session.uid,
+          roleInfo: req.body.data.roleInfo,
+          arrowPosition: req.body.data.arrowPosition,
+          text: req.body.data.text,
+          gameOrFight: req.body.data.gameOrFight,
+          peaking: req.body.data.peaking,
+          youBeatRic: req.body.data.youBeatRic,
+          dontMove: req.body.data.dontMove,
+          imgFlicker: req.body.data.imgFlicker
         });
         saveData
           .save()
@@ -38,10 +46,18 @@ router.post("/save", (req, res, next) => {
     const updateData = {
       character: req.body.data.character,
       position: req.body.data.position,
-      map: req.body.data.map,
+      //map: req.body.data.map,
       openMenu: req.body.data.openMenu,
       moving: req.body.data.moving,
-      user: req.session.uid
+      user: req.session.uid,
+      roleInfo: req.body.data.roleInfo,
+      arrowPosition: req.body.data.arrowPosition,
+      text: req.body.data.text,
+      gameOrFight: req.body.data.gameOrFight,
+      peaking: req.body.data.peaking,
+      youBeatRic: req.body.data.youBeatRic,
+      dontMove: req.body.data.dontMove,
+      imgFlicker: req.body.data.imgFlicker
     };
     Data.update({ user: id }, updateData, (err, updateResponse) => {
       if (err) {

@@ -33,6 +33,6 @@ var itemStyle = {
 
 var selectedItem = {
   ...itemStyle,
-  background: "blue",
+  background: "black",
   color: "white"
 };

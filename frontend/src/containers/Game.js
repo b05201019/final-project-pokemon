@@ -230,12 +230,15 @@ class Game extends Component {
   };
 
   fetchData = async () => {
+    const map = this.state.map
     await fetch("/api/getData")
       .then(res => res.json())
       .then(jsonData => {
+        console.log(jsonData)
         this.setState({
           ...jsonData,
-          openMenu: false
+          openMenu: false,
+          map: map
         });
       })
       .catch(err => console.log(err));
@@ -302,7 +305,7 @@ class Game extends Component {
             level: 43,
             anger: 0,
             currentBlood: roleInfo.enemy.currentBlood,
-            totalBlood: 200,
+            totalBlood: 300,
             frontImg: require("../img/RicBattle.png"),
   
             backImg: "",
@@ -566,8 +569,15 @@ class Game extends Component {
     }
   };
 
-  componentDidMount() {
+  
+  componentWillMount(){
     this.fetchData();
+    console.log("fetching")
+  }
+
+  componentDidMount() {
+      setTimeout(()=>this.setState(),10)
+      this.fetchData()
       document.addEventListener("keydown", this.moving);
       document.addEventListener("keydown", this.openMenu);
       document.addEventListener("keyup", () => {
@@ -579,7 +589,8 @@ class Game extends Component {
   }
 
   render() {
-    console.log(this.state.map.enemy[0])
+    console.log(this.state.map)
+    console.log(this.state.map.enemy)
     // console.log(this.state.moving);
     return (
       <div>
