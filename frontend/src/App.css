@@ -13,7 +13,10 @@
   display: flex;
   width: 1000px;
   height: 800px;
-  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   flex-direction: column;
 }
 
@@ -144,4 +147,26 @@
   overflow: hidden;
   white-space: nowrap;
   animation-iteration-count: infinite;
+}
+
+.blackScreen{
+
+}
+
+@keyframes dimToBlackEnd{
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}
+
+@keyframes dimToBlackBegin{
+  from{
+    opacity: 0;   
+  }
+  to{
+    opacity: 1;
+  }
 }

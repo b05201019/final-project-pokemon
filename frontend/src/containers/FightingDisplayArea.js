@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import InfoCard from '../components/InfoCard';
+import React, { Component } from "react";
+import InfoCard from "../components/InfoCard";
 
 class FightingDisplayArea extends Component {
     state = {  }
@@ -18,5 +18,5 @@ class FightingDisplayArea extends Component {
          );
     }
 }
- 
+
 export default FightingDisplayArea;

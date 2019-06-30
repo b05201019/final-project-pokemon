@@ -9,6 +9,7 @@ const app = express();
 mongoose
   .connect(
    "mongodb+srv://Jason:jason0214@cluster0-mu3hi.mongodb.net/test?retryWrites=true&w=majority",
+
     { useNewUrlParser: true }
   )
   .then(() => console.log("connected"))
@@ -30,6 +31,7 @@ app.use(
 //Router
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
+app.use("/api", require("./routes/api"));
 
 const PORT = 8000;
 
