@@ -11,31 +11,36 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
-        <div>Login</div>
+    <div className="form">
+      <div className="box">
+        <h2>Login</h2>
         <form
           action="/users/login"
           method="POST"
           id="login-form"
           onSubmit={this.handleSubmit}
         >
-          <input
-            type="text"
-            name="email"
-            placeholder="Email"
-            require={true}
-            onChange={e => this.setState({ email: e.target.value })}
-            value={this.state.email}
-          />
+          <div className="inputBox">
+              <input
+                type="text"
+                name="email"
+                require={true}
+                onChange={e => this.setState({ email: e.target.value })}
+                value={this.state.email}
+              />
+            <label for="email">email</label>
+          </div>
           <br />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            require={true}
-            onChange={e => this.setState({ password: e.target.value })}
-            value={this.state.password}
-          />
+          <div className="inputBox">
+              <input
+                type="password"
+                name="password"
+                require={true}
+                onChange={e => this.setState({ password: e.target.value })}
+                value={this.state.password}
+              />
+              <label for="Password">Password</label>
+          </div>
           <br />
         </form>
         {this.props.msg ? <span>* {this.props.msg}</span> : ""}
@@ -43,6 +48,7 @@ export default class Login extends Component {
         <br />
         <Link to="/">HomePage</Link>
       </div>
+    </div>
     );
   }
 }
