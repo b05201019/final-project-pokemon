@@ -326,10 +326,15 @@ class Game extends Component {
         upper: "",
         lower: ""
       },
-      gameOrFight: true,
+      imgFlicker: {my: 'visible', enemy: 'visible'}, 
+      gameOrFight: false,
       openMenu: false
     };
   }
+
+  sleep = function sleep(time) {
+    return new Promise(res => setTimeout(res, time));
+  };
 
   moving = e => {
     e.preventDefault();
@@ -464,29 +469,30 @@ class Game extends Component {
         });
       })
       .catch(err => console.log(err));
-  };
-
-  enemyExcuteAttack = async index => {
-    this.textDisplay({ upper: "", lower: "" });
-    var roleInfo = this.state.roleInfo;
-
-    roleInfo.enemy.attack[index].currentPP--;
-
-    this.textDisplay({ upper: roleInfo.enemy.name + "使出", lower: "" });
-    await this.sleep(this.state.text.upper.length * 500);
-    this.textDisplay({
-      upper: roleInfo.enemy.name + "使出",
-      lower: roleInfo.enemy.attack[index].name
-    });
-    await this.sleep(this.state.text.lower.length * 500);
-
-    if (Math.random() < roleInfo.enemy.attack[index].probability) {
-      roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
+    };
+    
+    enemyExcuteAttack = async index => {
+      this.textDisplay({ upper: "", lower: "" });
+      var roleInfo = this.state.roleInfo;
+      
+      roleInfo.enemy.attack[index].currentPP--;
+      
+      this.textDisplay({ upper: roleInfo.enemy.name + "使出", lower: "" });
+      await this.sleep(this.state.text.upper.length * 100);
+      this.textDisplay({
+        upper: roleInfo.enemy.name + "使出",
+        lower: roleInfo.enemy.attack[index].name
+      });
+      await this.sleep(this.state.text.lower.length * 100+200);
+      
+      if (Math.random() < roleInfo.enemy.attack[index].probability) {
+        roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
+        this.sparkle('my');
       this.textDisplay({ upper: "成功擊中!", lower: "" });
-      await this.sleep(this.state.text.upper.length * 500);
+      await this.sleep(this.state.text.upper.length * 100+200);
     } else {
       this.textDisplay({ upper: "但是失敗了...", lower: "" });
-      await this.sleep(this.state.text.upper.length * 500);
+      await this.sleep(this.state.text.upper.length * 100+200);
     }
 
     if (roleInfo.player.currentBlood <= 0) {
@@ -526,57 +532,86 @@ class Game extends Component {
       roleInfo.player.attack[index].currentPP--;
 
       this.textDisplay({ upper: roleInfo.player.name + "使出", lower: "" });
-      await this.sleep(this.state.text.upper.length * 500);
-      console.log(1);
+      await this.sleep(this.state.text.upper.length * 100);
       this.textDisplay({
         upper: roleInfo.player.name + "使出",
         lower: roleInfo.player.attack[index].name
       });
-      await this.sleep(this.state.text.lower.length * 500);
-      console.log(2);
+      await this.sleep(this.state.text.lower.length * 100+200);
       if (Math.random() < roleInfo.player.attack[index].probability) {
         roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
+        this.sparkle('enemy');
         this.textDisplay({ upper: "成功擊中!", lower: "" });
-        await this.sleep(this.state.text.upper.length * 500);
+        await this.sleep(this.state.text.upper.length * 100+200);
       } else {
         this.textDisplay({ upper: "但是失敗了...", lower: "" });
-        await this.sleep(this.state.text.upper.length * 500);
+        await this.sleep(this.state.text.upper.length * 100+200);
       }
-
+      
       this.setState({ roleInfo: roleInfo });
-
+      
       if (roleInfo.enemy.currentBlood <= 0) {
         this.textDisplay({ upper: "你贏了!", lower: "" });
         return true;
       } else {
         index = Math.floor(Math.random() * 4);
         var count = 0;
-
+        
         while (
           count < 4 &&
           roleInfo.enemy.attack[index + count].currentPP == 0
-        ) {
+          ) {
           count++;
         }
-
+        
         this.enemyExcuteAttack(index + count);
       }
     }
   };
-
+  
   textDisplay = obj => {
     this.setState({ text: { upper: obj.upper, lower: obj.lower } });
   };
-
+  
   skipClass = async () => {
     this.setState({ displayState: "text" });
     this.textDisplay({ upper: "想進優拓，", lower: "" });
-    await this.sleep(this.state.text.upper.length * 500);
+    await this.sleep(this.state.text.upper.length * 100);
     this.textDisplay({ upper: "想進優拓，", lower: "現在翹課可不行哦!" });
-    await this.sleep(this.state.text.lower.length * 500);
+    await this.sleep(this.state.text.lower.length * 100+200);
     this.textDisplay({ upper: "", lower: "" });
     this.setState({ displayState: "prepare" });
   };
+
+  sparkle = async e => {
+    if(e === 'enemy'){
+        this.setState({imgFlicker: {my: 'visible', enemy: 'hidden'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'hidden'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'hidden'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+
+    } else{
+        this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+    }
+  }
+  
 
   componentDidMount() {
     this.fetchData();
@@ -594,7 +629,6 @@ class Game extends Component {
 
   render() {
     // console.log(this.state.moving);
-    console.log(this.state.roleInfo);
     return (
       <div>
         {this.state.gameOrFight ? (
@@ -614,8 +648,8 @@ class Game extends Component {
             arrowPosition={this.state.arrowPosition}
             playerExecuteAttack={this.playerExecuteAttack}
             text={this.state.text}
-            displayState={this.state.displayState}
             skipClass={this.skipClass}
+            imgFlicker = {this.state.imgFlicker}
           />
         )}
       </div>

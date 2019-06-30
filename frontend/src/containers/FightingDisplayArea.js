@@ -14,7 +14,8 @@ class FightingDisplayArea extends Component {
               height: "450px",
               width: "600px",
               position: "absolute",
-              top: "140px"
+              top: "140px",
+              visibility: this.props.imgFlicker.my, 
             }}
           />
         </div>
@@ -25,7 +26,8 @@ class FightingDisplayArea extends Component {
               width: "400px",
               height: "450px",
               position: "absolute",
-              left: "600px"
+              left: "600px",
+              visibility: this.props.imgFlicker.enemy, 
             }}
           />
           <InfoCard roleInfo={this.props.roleInfo.player} />

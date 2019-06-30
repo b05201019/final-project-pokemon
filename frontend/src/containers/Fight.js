@@ -7,10 +7,6 @@ class Fight extends Component {
     displayState: "prepare"
   };
 
-  sleep = function sleep(time) {
-    return new Promise(res => setTimeout(res, time));
-  };
-
   goToFight = () => {
     this.setState({ displayState: "control" });
   };
@@ -23,14 +19,14 @@ class Fight extends Component {
     //console.log(this.props.roleInfo);
     return (
       <div className="Fight-Main-Field">
-        <FightingDisplayArea roleInfo={this.props.roleInfo} />
+        <FightingDisplayArea roleInfo={this.props.roleInfo} imgFlicker = {this.props.imgFlicker} />
         <FightingFooter
           attack={this.props.roleInfo.player.attack}
           moveArrow={this.props.moveArrow}
           arrowPosition={this.props.arrowPosition}
           playerExecuteAttack={this.props.playerExecuteAttack}
           text={this.props.text}
-          displayState={this.props.displayState}
+          displayState={this.state.displayState}
           goToFight={this.goToFight}
           goToPrepare={this.goToPrepare}
           skipClass={this.props.skipClass}
