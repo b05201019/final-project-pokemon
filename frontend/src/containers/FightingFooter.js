@@ -11,7 +11,6 @@ class FightingFooter extends Component {
     }
 
     render() { 
-
         if(this.props.text.upper == '' && this.props.text.lower == ''){
             return ( 
                 <div className = 'Fighting-Footer'>

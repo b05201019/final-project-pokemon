@@ -7,19 +7,16 @@ class FightingTextArea extends Component {
         this.upperTextLength = (this.props.text.upper.length).toString();
         this.upperStyle = {width: this.upperTextLength+'em',
                             animation: 'typing '+this.upperTextLength*0.1+'s steps('+this.upperTextLength+')',
-                            visibility: this.props.displayState
+                           
         }
 
         this.lowerTextLength = (this.props.text.lower.length).toString();
         this.lowerStyle = {width: this.lowerTextLength+'em',
                             animation: 'typing '+this.lowerTextLength*0.1+'s steps('+this.lowerTextLength+')',
-                            animationDelay:  this.upperTextLength*0.1+'s',
-                            visibility: this.props.displayState
         }
 
-        console.log(this.props.text.upper);
-
         return ( 
+            
             <div className = 'Fighting-Text-Area'>
                 <div className = 'text-input fighting-text-input-upper' style = {this.upperStyle}>
                     {this.props.text.upper}

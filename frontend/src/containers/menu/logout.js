@@ -15,7 +15,7 @@ export default class logout extends Component {
   render() {
     var isSelected = this.props.isSelected
       ? {
-          background: "blue",
+          background: "black",
           color: "white"
         }
       : {};

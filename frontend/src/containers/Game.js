@@ -138,11 +138,19 @@ class Game extends Component {
       gameOrFight: true,
       openMenu: false,
       speaking: false,
+      dontMove: false,
+      imgFlicker: {my: 'visible', enemy: 'visible'},
     };
   }
 
+
+  sleep = function sleep(time) {
+    return new Promise(res => setTimeout(res, time));
+  };
   
   moving = e => {
+    if(!this.state.gameOrFight) return 0;
+
     e.preventDefault();
     if (
       e.keyCode === 37 ||
@@ -197,31 +205,13 @@ class Game extends Component {
   };
 
   openMenu = e => {
+    if(!this.state.gameOrFight) return 0;
     e.preventDefault();
     e.keyCode === 73 &&
       this.state.openMenu &&
       document.addEventListener("keydown", this.moving);
     open.call(this, e);
     this.state.openMenu && document.removeEventListener("keydown", this.moving);
-  };
-
-  letsBattle = e => {
-    e.preventDefault();
-    const facing = this.state.character.characterFacing;
-    const top = parseInt(this.state.position.top);
-    const left = parseInt(this.state.position.left);
-    const enemyTop = this.state.character.characterPositionInMap.top - this.state.map.enemy[0].position.top;
-    const enemyLeft = this.state.character.characterPositionInMap.left - this.state.map.enemy[0].position.left;
-    if (e.keyCode === 32) {
-      if (top === enemyTop + 50 && left === enemyLeft && facing.down)
-        console.log("you meet ric downward!");
-      if (top === enemyTop - 100 && left === enemyLeft && facing.top)
-        console.log("you meet ric upward!");
-      if (top === enemyTop && left === enemyLeft - 50 && facing.left)
-        console.log("you meet ric leftside!");
-      if (top === enemyTop && left === enemyLeft + 50 && facing.right)
-        console.log("you meet ric rightside!");
-    }
   };
 
   bagUse = item => {
@@ -238,38 +228,39 @@ class Game extends Component {
         });
       })
       .catch(err => console.log(err));
-  };
-
-  enemyExcuteAttack = async index => {
-    this.textDisplay({ upper: "", lower: "" });
-    var roleInfo = this.state.roleInfo;
-
-    roleInfo.enemy.attack[index].currentPP--;
-
-    this.textDisplay({ upper: roleInfo.enemy.name + "使出", lower: "" });
-    await this.sleep(this.state.text.upper.length * 300);
-    this.textDisplay({
-      upper: roleInfo.enemy.name + "使出",
-      lower: roleInfo.enemy.attack[index].name
-    });
-    await this.sleep(this.state.text.lower.length * 300);
-
-    if (Math.random() < roleInfo.enemy.attack[index].probability) {
-      roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
+    };
+    
+    enemyExcuteAttack = async index => {
+      this.textDisplay({ upper: "", lower: "" });
+      var roleInfo = this.state.roleInfo;
+      
+      roleInfo.enemy.attack[index].currentPP--;
+      
+      this.textDisplay({ upper: roleInfo.enemy.name + "使出", lower: "" });
+      await this.sleep(this.state.text.upper.length * 100);
+      this.textDisplay({
+        upper: roleInfo.enemy.name + "使出",
+        lower: roleInfo.enemy.attack[index].name
+      });
+      await this.sleep(this.state.text.lower.length * 100+200);
+      
+      if (Math.random() < roleInfo.enemy.attack[index].probability) {
+        roleInfo.player.currentBlood -= roleInfo.enemy.attack[index].damage;
+        this.sparkle('my');
       this.textDisplay({ upper: "成功擊中!", lower: "" });
-      await this.sleep(this.state.text.upper.length * 300);
+      await this.sleep(this.state.text.upper.length * 100+200);
     } else {
       this.textDisplay({ upper: "但是失敗了...", lower: "" });
-      await this.sleep(this.state.text.upper.length * 300);
+      await this.sleep(this.state.text.upper.length * 100+200);
     }
 
     if (roleInfo.player.currentBlood <= 0) {
       this.textDisplay({ upper: "你輸了...", lower: "" });
-      await this.sleep(this.state.text.upper.lengh*300);
-      this.setState({gameOrFight: true});
+      await this.sleep(3000);
+      this.setState({gameOrFight: true, speaking: false});
     }
 
-    this.setState({ roleInfo: roleInfo, displayState: "control" });
+    this.setState({ roleInfo: roleInfo, displayState: "control", dontMove: false });
 
     this.textDisplay({ upper: "", lower: "" });
   };
@@ -291,6 +282,7 @@ class Game extends Component {
   };
 
   letsBattle = (e)=>{
+    if(!this.state.gameOrFight) return 0;
     e.preventDefault();
     const facing = this.state.character.characterFacing;
     const top = parseInt(this.state.position.top);
@@ -305,7 +297,7 @@ class Game extends Component {
             this.setState({speaking: true});
             setTimeout(()=>this.setState({map: {...this.state.map,
                 enemy:[{name:"ric", position:{top:100, left:200}, facing:0, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
-            setTimeout(()=>this.setState({gameOrFight: false}), 6000);
+            setTimeout(()=>this.setState({gameOrFight: false}), 5000);
         };
         if(top===enemyTop&&left===enemyLeft-50&&facing.left){
             this.setState({map: {...this.state.map,
@@ -313,7 +305,7 @@ class Game extends Component {
             this.setState({speaking: true});
             setTimeout(()=>this.setState({map: {...this.state.map,
                 enemy:[{name:"ric", position:{top:100, left:200}, facing:1, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
-            setTimeout(()=>this.setState({gameOrFight: false}), 6000);
+            setTimeout(()=>this.setState({gameOrFight: false}), 5000);
         };
         if(top===enemyTop&&left===enemyLeft+50&&facing.right){
             this.setState({map: {...this.state.map,
@@ -321,68 +313,9 @@ class Game extends Component {
             this.setState({speaking: true});
             setTimeout(()=>this.setState({map: {...this.state.map,
                 enemy:[{name:"ric", position:{top:100, left:200}, facing:2, text:{upper:"優拓現在缺人噢",lower:"但你github的星星數......我們先來對戰吧！",}}]}}), 1000)
-            setTimeout(()=>this.setState({gameOrFight: false}), 6000);
+            setTimeout(()=>this.setState({gameOrFight: false}), 5000);
         };}
     }
-
-  playerExecuteAttack = async index => {
-        this.setState({ waitPressEnter: false });
-        var roleInfo = this.state.roleInfo;
-        if (roleInfo.player.attack[index].currentPP > 0) {
-        this.setState({ displayState: "text" });
-        roleInfo.player.attack[index].currentPP--;
-
-        this.textDisplay({ upper: roleInfo.player.name + "使出", lower: "" });
-        await this.sleep(this.state.text.upper.length * 300);
-        console.log(1);
-        this.textDisplay({
-            upper: roleInfo.player.name + "使出",
-            lower: roleInfo.player.attack[index].name
-        });
-        await this.sleep(this.state.text.lower.length * 300);
-        console.log(2);
-        if (Math.random() < roleInfo.player.attack[index].probability) {
-            roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
-            this.textDisplay({ upper: "成功擊中!", lower: "" });
-            await this.sleep(this.state.text.upper.length * 300);
-        } else {
-            this.textDisplay({ upper: "但是失敗了...", lower: "" });
-            await this.sleep(this.state.text.upper.length * 300);
-        }
-
-        this.setState({ roleInfo: roleInfo });
-
-        if (roleInfo.enemy.currentBlood <= 0) {
-            this.textDisplay({ upper: "你贏了!", lower: "" });
-            await this.sleep(this.state.text.upper.lengh*300);
-            this.setState({gameOrFight: true});
-        } else {
-            index = Math.floor(Math.random() * 4);
-            var count = 0;
-
-            while (
-            count < 4 &&
-            roleInfo.enemy.attack[index + count].currentPP == 0
-            ) {
-            count++;
-            }
-
-            this.enemyExcuteAttack(index + count);
-        }}
-    }
-        textDisplay = obj => {
-            this.setState({ text: { upper: obj.upper, lower: obj.lower } });
-        };
-
-        skipClass = async () => {
-            this.setState({ displayState: "text" });
-            this.textDisplay({ upper: "想進優拓，", lower: "" });
-            await this.sleep(this.state.text.upper.length * 300);
-            this.textDisplay({ upper: "想進優拓，", lower: "現在翹課可不行哦!" });
-            await this.sleep(this.state.text.lower.length * 300);
-            this.textDisplay({ upper: "", lower: "" });
-            this.setState({ displayState: "prepare" });
-        };
         skipClass2 = async () => {
             this.textDisplay({ upper: "優拓現在缺人噢", lower: "" });
             await this.sleep(this.state.text.upper.length * 300);
@@ -390,9 +323,102 @@ class Game extends Component {
             await this.sleep(this.state.text.lower.length * 300);
             this.textDisplay({ upper: "", lower: "" });
         }
-  componentDidMount(){
+  playerExecuteAttack = async index => {
+    if(this.state.dontMove) return 0;
+    
+    this.setState({ dontMove: true });
+    var roleInfo = this.state.roleInfo;
+
+    if (roleInfo.player.attack[index].currentPP > 0) {
+      this.setState({ displayState: "text" });
+      roleInfo.player.attack[index].currentPP--;
+
+      this.textDisplay({ upper: roleInfo.player.name + "使出", lower: "" });
+      await this.sleep(this.state.text.upper.length * 100);
+      this.textDisplay({
+        upper: roleInfo.player.name + "使出",
+        lower: roleInfo.player.attack[index].name
+      });
+      await this.sleep(this.state.text.lower.length * 100+200);
+      if (Math.random() < roleInfo.player.attack[index].probability) {
+        roleInfo.enemy.currentBlood -= roleInfo.player.attack[index].damage;
+        this.sparkle('enemy');
+        this.textDisplay({ upper: "成功擊中!", lower: "" });
+        await this.sleep(this.state.text.upper.length * 100+200);
+      } else {
+        this.textDisplay({ upper: "但是失敗了...", lower: "" });
+        await this.sleep(this.state.text.upper.length * 100+200);
+      }
+      
+      this.setState({ roleInfo: roleInfo });
+      
+      if (roleInfo.enemy.currentBlood <= 0) {
+        this.textDisplay({ upper: "你贏了!", lower: "" });
+        await this.sleep(3000);
+        this.setState({gameOrFight: true, speaking: false});
+      } else {
+        index = Math.floor(Math.random() * 4);
+        var count = 0;
+        
+        while (
+          count < 4 &&
+          roleInfo.enemy.attack[index + count].currentPP == 0
+          ) {
+          count++;
+        }
+        
+        this.enemyExcuteAttack(index + count);
+      }
+    }
+  };
+  
+  textDisplay = obj => {
+    this.setState({ text: { upper: obj.upper, lower: obj.lower } });
+  };
+  
+  skipClass = async () => {
+    if(this.state.dontMove) return 0;
+    this.setState({ displayState: "text", dontMove: true });
+    this.textDisplay({ upper: "想進優拓，", lower: "" });
+    await this.sleep(this.state.text.upper.length * 100);
+    this.textDisplay({ upper: "想進優拓，", lower: "現在翹課可不行哦!" });
+    await this.sleep(this.state.text.lower.length * 100+200);
+    this.textDisplay({ upper: "", lower: "" });
+    this.setState({ displayState: "prepare", dontMove: false });
+  };
+
+  sparkle = async e => {
+    if(e === 'enemy'){
+        this.setState({imgFlicker: {my: 'visible', enemy: 'hidden'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'hidden'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'hidden'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+
+    } else{
+        this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'hidden', enemy: 'visible'}});
+        await this.sleep(100);
+        this.setState({imgFlicker: {my: 'visible', enemy: 'visible'}});
+    }
+  }
+  
+
+  componentDidMount() {
     this.fetchData();
-    if (this.state.gameOrFight) {
       document.addEventListener("keydown", this.moving);
       document.addEventListener("keydown", this.openMenu);
       document.addEventListener("keyup", () => {
@@ -401,12 +427,10 @@ class Game extends Component {
         });
       });
       document.addEventListener("keydown", this.letsBattle);
-    }
   }
 
   render() {
     // console.log(this.state.moving);
-    console.log(this.state.roleInfo);
     return (
       <div>
         {this.state.speaking&&<div style={style}></div>}
@@ -430,8 +454,8 @@ class Game extends Component {
             arrowPosition={this.state.arrowPosition}
             playerExecuteAttack={this.playerExecuteAttack}
             text={this.state.text}
-            displayState={this.state.displayState}
             skipClass={this.skipClass}
+            imgFlicker = {this.state.imgFlicker}
           />
         )}
       </div>
@@ -452,7 +476,7 @@ var style = {
     zIndex: "1",
     animationDelay: "3s",
     animationName: "dimToBlackBegin",
-    animationDuration: "3s",
+    animationDuration: "2.5s",
     animationTimingFunction: "linear",
     mixBlendMode: "darken",
   }
